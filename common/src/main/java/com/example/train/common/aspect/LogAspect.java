@@ -1,4 +1,4 @@
-package com.example.train.aspect;
+package com.example.train.common.aspect;
 
 import cn.hutool.core.util.RandomUtil;
 import com.alibaba.fastjson.JSONObject;
@@ -22,10 +22,13 @@ import org.springframework.web.multipart.MultipartFile;
 @Aspect
 @Component
 public class LogAspect {
+    public LogAspect(){
+        System.out.println("Common LogAspect");
+    }
     private final static Logger LOG = LoggerFactory.getLogger(LogAspect.class);
 
     /** 定义一个切点 */
-    @Pointcut("execution(public * com.example.train.contraller.*.*(..))")
+    @Pointcut("execution(public * com.example..*Controller.*(..))")
     public void controllerPointcut() {}
 
 
