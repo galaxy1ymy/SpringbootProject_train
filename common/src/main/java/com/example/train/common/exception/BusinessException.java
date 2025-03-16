@@ -11,8 +11,13 @@ public class BusinessException extends RuntimeException{
         return e;
     }
 
-    public void setAnEnum(BusinessExceptionEnum e) {
+    public void setE(BusinessExceptionEnum e) {
         this.e = e;
+    }
+// 不写入堆栈消息，提高性能
+    @Override
+    public Throwable fillInStackTrace() {
+        return this;
     }
 
 
