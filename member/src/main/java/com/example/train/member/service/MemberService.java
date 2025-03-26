@@ -2,6 +2,7 @@ package com.example.train.member.service;
 
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.IdUtil;
 import com.example.train.common.exception.BusinessException;
 import com.example.train.common.exception.BusinessExceptionEnum;
 import com.example.train.member.domain.Member;
@@ -34,7 +35,7 @@ public class MemberService {
         }
 
         Member member = new Member();
-        member.setId(System.currentTimeMillis());
+        member.setId(IdUtil.getSnowflake(1,1).nextId());
         member.setMobile(mobile);
         memberMapper.insert(member);
         return member.getId();
