@@ -43,6 +43,7 @@
 
 <script setup>
 import { reactive } from 'vue';
+import axios from 'axios';
 const LoginForm = reactive({
   mobile:'',
   code:''
@@ -50,9 +51,19 @@ const LoginForm = reactive({
 const onFinish = values => {
   console.log('Success:', values);
 };
+
 const onFinishFailed = errorInfo => {
   console.log('Failed:', errorInfo);
 };
+
+const sendCode =() => {
+  axios.post('http://localhost:8000/member/member/send-code',{
+    mobile:LoginForm.mobile
+  }).then(response=>{
+    console.log(response);
+  });
+};
+
 </script>
 
 <style>
