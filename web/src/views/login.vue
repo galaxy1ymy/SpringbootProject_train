@@ -14,7 +14,6 @@
             name="mobile"
             :rules="[
               { required: true, message: '请输入手机号!' },
-              { pattern: /^1\d{10}$/, message: '请输入正确的手机号!' }
             ]"
         >
           <a-input v-model:value="LoginForm.mobile" placeholder="请输入手机号" />
@@ -25,7 +24,6 @@
             name="code"
             :rules="[
               { required: true, message: '请输入验证码！' },
-              { pattern: /^\d{4}$/, message: '验证码必须是4位数字' }
             ]"
         >
           <a-input v-model:value="LoginForm.code" placeholder="请输入验证码">
@@ -73,9 +71,8 @@ const onFinishFailed = errorInfo => {
   background-color: #fcfcfc;
 }
 
-/* 添加以下样式 */
 .login-main input {
-  height: 40px;  /* 设置输入框高度 */
+  height: 40px;
   line-height: 40px;
 
 }
