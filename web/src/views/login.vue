@@ -43,27 +43,47 @@
 
 <script setup>
 import { reactive } from 'vue';
-import axios from 'axios';
+import axios from '../axios';
+import { message } from 'ant-design-vue';
 const LoginForm = reactive({
   mobile:'',
   code:''
 });
 const onFinish = values => {
   console.log('Success:', values);
+  axios.post('/member/member/login', {
+    mobile: LoginForm.mobile,
+    code: LoginForm.code
+  }).then(response => {
+    let data = response.data;
+    if (data.success) {
+      message.success('登录成功');
+      // TODO: 后续可以添加登录成功后的跳转
+    } else {
+      message.error(data.message);
+    }
+  });
 };
 
 const onFinishFailed = errorInfo => {
   console.log('Failed:', errorInfo);
 };
 
-const sendCode =() => {
-  axios.post('http://localhost:8000/member/member/send-code',{
-    mobile:LoginForm.mobile
-  }).then(response=>{
-    console.log(response);
+const sendCode = () => {
+  if (!LoginForm.mobile) {
+    message.error('请输入手机号');
+    return;
+  }
+  axios.post('/member/member/send-code', {
+    mobile: LoginForm.mobile
+  }).then(response => {
+    if (response.data.success) {
+      message.success('验证码已发送');
+    } else {
+      message.error(response.data.message);
+    }
   });
 };
-
 </script>
 
 <style>
