@@ -88,6 +88,9 @@ const sendCode = () => {
 <style>
 .login{
   margin-top: 100px;
+  width: 1000px;
+  height: 50px;
+  margin-left: 200px;
 }
 .login-main h1{
   font-size: 25px;
