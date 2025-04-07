@@ -45,10 +45,13 @@
 import axios from 'axios';
 import { reactive } from 'vue';
 import { notification } from 'ant-design-vue';
+import {useRouter} from "vue-router";
+
 const LoginForm = reactive({
   mobile:'',
   code:''
 });
+const router = useRouter();
 const onFinish = values => {
   console.log('Success:', values);
   axios.post('/member/member/login', {
@@ -58,6 +61,7 @@ const onFinish = values => {
     let data = response.data;
     if (data.success) {
       notification.success({description:'登录成功'});
+      router.push("/");
     } else {
       notification.error({description:data.message});
     }
