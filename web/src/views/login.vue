@@ -42,9 +42,9 @@
 </template>
 
 <script setup>
+import axios from 'axios';
 import { reactive } from 'vue';
-import axios from '../axios';
-import { message } from 'ant-design-vue';
+import { notification } from 'ant-design-vue';
 const LoginForm = reactive({
   mobile:'',
   code:''
@@ -57,10 +57,9 @@ const onFinish = values => {
   }).then(response => {
     let data = response.data;
     if (data.success) {
-      message.success('登录成功');
-      // TODO: 后续可以添加登录成功后的跳转
+      notification.success({description:'登录成功'});
     } else {
-      message.error(data.message);
+      notification.error({description:data.message});
     }
   });
 };
@@ -71,16 +70,16 @@ const onFinishFailed = errorInfo => {
 
 const sendCode = () => {
   if (!LoginForm.mobile) {
-    message.error('请输入手机号');
+    notification.error({description:'请输入手机号'});
     return;
   }
   axios.post('/member/member/send-code', {
     mobile: LoginForm.mobile
   }).then(response => {
     if (response.data.success) {
-      message.success('验证码已发送');
+      notification.success({description:'验证码已发送'});
     } else {
-      message.error(response.data.message);
+      notification.error({description:response.data.message});
     }
   });
 };
