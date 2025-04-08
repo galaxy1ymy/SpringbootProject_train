@@ -6,8 +6,6 @@
           :model="LoginForm"
           name="basic"
           autocomplete="off"
-          @finish="onFinish"
-          @finishFailed="onFinishFailed"
       >
         <a-form-item
             label=""
@@ -34,59 +32,66 @@
         </a-form-item>
 
         <a-form-item>
-            <a-button type="primary" block html-type="submit">登录</a-button>
+            <a-button type="primary" block html-type="submit" @click="login">登录</a-button>
         </a-form-item>
       </a-form>
     </a-col>
   </a-row>
 </template>
 
-<script setup>
+<script >
 import axios from 'axios';
-import { reactive } from 'vue';
+import { defineComponent,reactive } from 'vue';
 import { notification } from 'ant-design-vue';
 import {useRouter} from "vue-router";
 
-const LoginForm = reactive({
-  mobile:'',
-  code:''
-});
-const router = useRouter();
-const onFinish = values => {
-  console.log('Success:', values);
-  axios.post('/member/member/login', {
-    mobile: LoginForm.mobile,
-    code: LoginForm.code
-  }).then(response => {
-    let data = response.data;
-    if (data.success) {
-      notification.success({description:'登录成功'});
-      router.push("/");
-    } else {
-      notification.error({description:data.message});
-    }
-  });
-};
+export default defineComponent({
+  name:"login-view",
+  setup() {
+    const LoginForm = reactive({
+      mobile:'',
+      code:''
+    });
+    const router = useRouter();
 
-const onFinishFailed = errorInfo => {
-  console.log('Failed:', errorInfo);
-};
+    const login =() => {
+      axios.post('/member/member/login', {
+        mobile: LoginForm.mobile,
+        code: LoginForm.code
+      }).then(response => {
+        let data = response.data;
+        if (data.success) {
+          notification.success({description:'登录成功'});
+          router.push("/");
+        } else {
+          notification.error({description:data.message});
+        }
+      });
+    };
 
-const sendCode = () => {
-  if (!LoginForm.mobile) {
-    notification.error({description:'请输入手机号'});
-    return;
+
+    const sendCode = () => {
+      if (!LoginForm.mobile) {
+        notification.error({description:'请输入手机号'});
+        return;
+      }
+      axios.post('/member/member/send-code', {
+        mobile: LoginForm.mobile
+      }).then(response => {
+        if (response.data.success) {
+          notification.success({description:'验证码已发送'});
+        } else {
+          notification.error({description:response.data.message});
+        }
+      });
+    };
+    return{
+      LoginForm,
+      sendCode,
+      login
+    };
   }
-  axios.post('/member/member/send-code', {
-    mobile: LoginForm.mobile
-  }).then(response => {
-    if (response.data.success) {
-      notification.success({description:'验证码已发送'});
-    } else {
-      notification.error({description:response.data.message});
-    }
-  });
-};
+})
 </script>
 
 <style>
