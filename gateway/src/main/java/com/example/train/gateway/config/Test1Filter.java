@@ -21,6 +21,6 @@ public class Test1Filter implements GlobalFilter, Ordered {
 
     @Override
     public int getOrder() {
-        return 0;
+        return 1;
     }
 }
