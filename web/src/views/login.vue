@@ -44,6 +44,7 @@ import axios from 'axios';
 import { defineComponent,reactive } from 'vue';
 import { notification } from 'ant-design-vue';
 import {useRouter} from "vue-router";
+import store from "@/store";
 
 export default defineComponent({
   name:"login-view",
@@ -53,22 +54,6 @@ export default defineComponent({
       code:''
     });
     const router = useRouter();
-
-    const login =() => {
-      axios.post('/member/member/login', {
-        mobile: LoginForm.mobile,
-        code: LoginForm.code
-      }).then(response => {
-        let data = response.data;
-        if (data.success) {
-          notification.success({description:'登录成功'});
-          router.push("/");
-        } else {
-          notification.error({description:data.message});
-        }
-      });
-    };
-
 
     const sendCode = () => {
       if (!LoginForm.mobile) {
@@ -80,8 +65,25 @@ export default defineComponent({
       }).then(response => {
         if (response.data.success) {
           notification.success({description:'验证码已发送'});
+          LoginForm.code="8888";
         } else {
           notification.error({description:response.data.message});
+        }
+      });
+    };
+
+    const login =() => {
+      axios.post('/member/member/login', {
+        mobile: LoginForm.mobile,
+        code: LoginForm.code
+      }).then(response => {
+        let data = response.data;
+        if (data.success) {
+          notification.success({description:'登录成功'});
+          router.push("/");
+          store.commit('setMember',data.content);
+        } else {
+          notification.error({description:data.message});
         }
       });
     };
