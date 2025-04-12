@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import Antd from 'ant-design-vue';
+import Antd, {notification} from 'ant-design-vue';
 import 'ant-design-vue/dist/reset.css';
 import * as Icons from '@ant-design/icons-vue';
 import axios from 'axios';
@@ -19,18 +19,31 @@ for (const i in icons){
 //axios拦截器
 axios.interceptors.request.use(function (config){
     console.log('请求参数:', config);
+    const _token=store.state.member.token;
+    if(_token){
+        config.headers.token=_token;
+        console.log('请求headers增加token:', _token);
+    }
     return config;
 },error=>{
     return Promise.reject(error);
 });
 
-axios.interceptors.response.use(function (response){
+axios.interceptors.response.use(function (response) {
     console.log('返回结果:', response);
     return response;
-},error=>{
-    console.log('返回错误:',error);
+}, error => {
+    const response = error.response;
+    if (response && response.status === 401) {
+        store.commit('setMember', {});
+        notification.error({description: "登录超时，请重新登录" ,duration:3});
+        router.push('/login');
+        // 直接返回一个中断的 Promise，防止错误继续冒泡
+        return new Promise(() => {});
+    }
     return Promise.reject(error);
 });
+
 
 axios.defaults.baseURL=process.env.VUE_APP_SERVER;
 console.log('环境：', process.env.NODE_ENV);

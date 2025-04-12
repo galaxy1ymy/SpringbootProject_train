@@ -20,7 +20,7 @@ public class LoginMemberFilter implements GlobalFilter, Ordered {
         //排除不需要拦截的请求
         if (path.contains("/admin")
                 || path.contains("/hello")
-                || path.contains("/member//member/login")
+                || path.contains("/member/member/login")
                 || path.contains("/member/member/send-code")) {
             LOG.info("不需要登陆验证：{}", path);
             return chain.filter(exchange);

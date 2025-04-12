@@ -6,6 +6,8 @@
           :model="LoginForm"
           name="basic"
           autocomplete="off"
+          @finish="login"
+          @finishFailed="loginFailed"
       >
         <a-form-item
             label=""
@@ -32,28 +34,49 @@
         </a-form-item>
 
         <a-form-item>
-            <a-button type="primary" block html-type="submit" @click="login">登录</a-button>
+            <a-button type="primary" block html-type="submit">登录</a-button>
         </a-form-item>
       </a-form>
     </a-col>
   </a-row>
 </template>
 
-<script >
+<script>
 import axios from 'axios';
-import { defineComponent,reactive } from 'vue';
+import { defineComponent, reactive } from 'vue';
 import { notification } from 'ant-design-vue';
-import {useRouter} from "vue-router";
+import { useRouter } from "vue-router";
 import store from "@/store";
 
 export default defineComponent({
-  name:"login-view",
+  name: "login-view",
   setup() {
     const LoginForm = reactive({
-      mobile:'',
-      code:''
+      mobile: '13000000000',
+      code: ''
     });
     const router = useRouter();
+
+    const login = () => {
+        axios.post('/member/member/login', {
+            mobile: LoginForm.mobile,
+            code: LoginForm.code
+        }).then(response => {
+            let data = response.data;
+            if (data.success) {
+                store.commit('setMember', data.content);
+                console.log('登录成功，获取到的token:', data.content.token);  // 添加这行
+                notification.success({description: '登录成功',duration:3});
+                router.push("/");
+            } else {
+                notification.error({description: data.message});
+            }
+        });
+    };
+
+    const loginFailed = (errorInfo) => {
+      console.log('Failed:', errorInfo);
+    };
 
     const sendCode = () => {
       if (!LoginForm.mobile) {
@@ -64,7 +87,7 @@ export default defineComponent({
         mobile: LoginForm.mobile
       }).then(response => {
         if (response.data.success) {
-          notification.success({description:'验证码已发送'});
+          notification.success({description:'验证码已发送',duration:2});
           LoginForm.code="8888";
         } else {
           notification.error({description:response.data.message});
@@ -72,25 +95,11 @@ export default defineComponent({
       });
     };
 
-    const login =() => {
-      axios.post('/member/member/login', {
-        mobile: LoginForm.mobile,
-        code: LoginForm.code
-      }).then(response => {
-        let data = response.data;
-        if (data.success) {
-          notification.success({description:'登录成功'});
-          router.push("/");
-          store.commit('setMember',data.content);
-        } else {
-          notification.error({description:data.message});
-        }
-      });
-    };
-    return{
+    return {
       LoginForm,
       sendCode,
-      login
+      login,
+      loginFailed
     };
   }
 })
