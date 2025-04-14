@@ -15,7 +15,16 @@ const routes = [
     component: () => import('../views/main.vue'),
     meta:{
       loginRequire:true
-    }
+    },
+    children: [
+      {
+        path: 'passenger',
+        name: 'passenger',  // 添加路由名称
+        component: () => import('../views/passenger.vue')
+      },
+
+    ]
+
   }
 
 ]
