@@ -1,8 +1,8 @@
 <template>
   <a-layout-sider width="200" style="background: #fff">
-    <a-menu>
-        <a-menu-item key="welcome"><CoffeeOutlined style="padding-right: 8px" />欢迎</a-menu-item>
-        <a-menu-item key="passenger">
+    <a-menu :selectedKeys="selectedKeys2">
+        <a-menu-item key="1"><CoffeeOutlined style="padding-right: 8px" />欢迎</a-menu-item>
+        <a-menu-item key="2">
           <router-link to="/passenger">
             <UserOutlined style="padding-right: 8px"/> 乘车人管理
           </router-link>
@@ -20,15 +20,13 @@ export default defineComponent({
   name:"the-sider-view",
   setup() {
     const route = useRoute();
-    const selectedKeys = ref([]);
-
-    watch(() => route.name, (newName) => {
-      selectedKeys.value = newName === 'passenger' ? ['passenger'] : ['welcome']
+    const selectedKeys2 = ref([]);
+    watch(() => route.path, (path) => {
+      selectedKeys2.value = path === '/passenger' ? ['2'] : ['1'];
     }, { immediate: true });
-    return{
-      selectedKeys
-    };
+    return { selectedKeys2 };
   }
+
 })
 
 </script>

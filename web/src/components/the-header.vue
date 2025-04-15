@@ -5,9 +5,9 @@
       您好,{{member.mobile}}！&nbsp;&nbsp;
       <router-link to="/login" style="color: white">退出登录</router-link>
     </div>
-    <a-menu theme="dark" mode="horizontal" :style="{ lineHeight: '64px' }">
-      <a-menu-item key="welcome"><CoffeeOutlined style="padding-right: 8px"/>欢迎</a-menu-item>
-      <a-menu-item key="passenger">
+    <a-menu theme="dark" mode="horizontal" :style="{ lineHeight: '64px' }" :selectedKeys="selectedKeys1">
+      <a-menu-item key="1"><CoffeeOutlined style="padding-right: 8px"/>欢迎</a-menu-item>
+      <a-menu-item key="2">
         <router-link to="/passenger" style="color: inherit;">
           <UserOutlined style="padding-right: 8px"/> 乘车人管理
         </router-link>
@@ -25,14 +25,15 @@ export default defineComponent({
   name:"the-header-view",
   setup() {
     const route = useRoute();
-    const selectedKeys = ref([]);
+    const selectedKeys1 = ref([]);
     let member=store.state.member
-    watch(() => route.name, (newName) => {
-      selectedKeys.value = newName === 'passenger' ? ['passenger'] : ['welcome']
+    watch(() => route.path, (path) => {
+      selectedKeys1.value = path === '/passenger' ? ['2'] : ['1'];
     }, { immediate: true });
 
+
     return{
-      selectedKeys,
+      selectedKeys1,
       member
 
     };
