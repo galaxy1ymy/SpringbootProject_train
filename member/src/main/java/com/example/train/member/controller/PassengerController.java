@@ -2,6 +2,7 @@ package com.example.train.member.controller;
 
 import com.example.train.common.context.LoginMemberContext;
 import com.example.train.common.resp.CommonResp;
+import com.example.train.common.resp.PageResp;
 import com.example.train.member.req.*;
 import com.example.train.member.resp.MemberLoginResp;
 import com.example.train.member.resp.PassengerQueryResp;
@@ -24,9 +25,9 @@ public class PassengerController {
         return new CommonResp<>();
     }
     @GetMapping("/query-list")
-    public CommonResp<List<PassengerQueryResp>> queryList(@Valid PassengerQueryReq req) {
+    public CommonResp<PageResp<PassengerQueryResp>> queryList(@Valid PassengerQueryReq req) {
         req.setMemberId(LoginMemberContext.getId());
-        List<PassengerQueryResp> list = passengerService.queryList(req);
+        PageResp<PassengerQueryResp> list = passengerService.queryList(req);
         return new CommonResp<>(list);
     }
 
