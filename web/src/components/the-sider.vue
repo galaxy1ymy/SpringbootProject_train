@@ -1,14 +1,14 @@
 <template>
   <a-layout-sider width="200" style="background: #fff">
-    <a-menu :selectedKeys="selectedKeys2">
-        <a-menu-item key="1">
+    <a-menu :selectedKeys="selectedKeys" mode="inline">
+        <a-menu-item key="/welcome">
           <router-link to="/welcome">
-            <CoffeeOutlined style="padding-right: 8px" />欢迎
+            <CoffeeOutlined/>&nbsp; 欢迎
           </router-link>
         </a-menu-item>
-        <a-menu-item key="2">
+        <a-menu-item key="/passenger">
           <router-link to="/passenger">
-            <UserOutlined style="padding-right: 8px"/> 乘车人管理
+            <UserOutlined/>&nbsp; 乘车人管理
           </router-link>
 
         </a-menu-item>
@@ -18,17 +18,20 @@
 
 <script>
 import {defineComponent, ref,watch} from 'vue';
-import { useRoute } from 'vue-router';
+import router from "@/router";
 
 export default defineComponent({
   name:"the-sider-view",
   setup() {
-    const route = useRoute();
-    const selectedKeys2 = ref([]);
-    watch(() => route.path, (path) => {
-      selectedKeys2.value = path === '/passenger' ? ['2'] : ['1'];
+    const selectedKeys = ref([]);
+    watch(() => router.currentRoute.value.path, (newValue) => {
+      console.log('watch',newValue);
+      selectedKeys.value=[];
+      selectedKeys.value.push(newValue);
     }, { immediate: true });
-    return { selectedKeys2 };
+    return{
+      selectedKeys
+    };
   }
 
 })

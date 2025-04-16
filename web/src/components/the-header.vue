@@ -5,15 +5,15 @@
       您好,{{member.mobile}}！&nbsp;&nbsp;
       <router-link to="/login" style="color: white">退出登录</router-link>
     </div>
-    <a-menu theme="dark" mode="horizontal" :style="{ lineHeight: '64px' }" :selectedKeys="selectedKeys1">
-      <a-menu-item key="1">
+    <a-menu theme="dark" mode="horizontal" :style="{ lineHeight: '64px' }" :selectedKeys="selectedKeys">
+      <a-menu-item key="/welcome">
         <router-link to="/welcome" style="color: inherit;">
-          <CoffeeOutlined style="padding-right: 8px"/>欢迎
+          <CoffeeOutlined/>&nbsp; 欢迎
         </router-link>
       </a-menu-item>
-      <a-menu-item key="2">
+      <a-menu-item key="/passenger">
         <router-link to="/passenger" style="color: inherit;">
-          <UserOutlined style="padding-right: 8px"/> 乘车人管理
+          <UserOutlined/>&nbsp; 乘车人管理
         </router-link>
       </a-menu-item>
     </a-menu>
@@ -23,21 +23,23 @@
 <script>
 import {defineComponent, ref, watch} from 'vue';
 import store from "@/store";
-import { useRoute } from 'vue-router';
+import router from "@/router";
 
 export default defineComponent({
   name:"the-header-view",
   setup() {
-    const route = useRoute();
-    const selectedKeys1 = ref([]);
+
+    const selectedKeys = ref([]);
     let member=store.state.member
-    watch(() => route.path, (path) => {
-      selectedKeys1.value = path === '/passenger' ? ['2'] : ['1'];
+    watch(() => router.currentRoute.value.path, (newValue) => {
+      console.log('watch',newValue);
+      selectedKeys.value=[];
+      selectedKeys.value.push(newValue);
     }, { immediate: true });
 
 
     return{
-      selectedKeys1,
+      selectedKeys,
       member
 
     };

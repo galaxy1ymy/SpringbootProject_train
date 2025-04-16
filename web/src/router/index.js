@@ -20,7 +20,7 @@ const routes = [
       {
         path: 'passenger',
         name: 'passenger',
-        component: () => import('../views/passenger.vue')
+        component: () => import('../views/main/passenger.vue')
       },
       {
         path: 'welcome',
