@@ -1,48 +1,8 @@
-<script>
-import { ref ,defineComponent,reactive} from 'vue';
-import {notification} from "ant-design-vue";
-import axios from "axios";
-export default defineComponent({
-  name: "passenger",
-  setup() {
-    const visible = ref(false);
-    const passenger = reactive({
-      id: undefined,
-      memberId: undefined,
-      name: undefined,
-      idCard: undefined,
-      type: undefined,
-      createTime: undefined,
-      updateTime: undefined
-    });
-    const showModal = () => {
-      visible.value = true;
-    };
-    const handleOk =()=> {
-      axios.post('/member/passenger/save', passenger).then(response => {
-        let data = response.data;
-        if (data.success) {
-          notification.success({description: '保存成功'});
-          visible.value = false;
-        } else {
-          notification.error({description: data.message});
-        }
-      });
-    };
-    return{
-      visible,
-      showModal,
-      handleOk,
-      passenger
-    }
-  }
-})
-
-</script>
-
 <template>
-  <div>
-    <a-button type="primary" @click="showModal">新增</a-button>
+    <p>
+      <a-button type="primary" @click="showModal">新增</a-button>
+    </p>
+    <a-table :dataSource="dataSource" :columns="columns" />
     <a-modal v-model:visible="visible" title="乘车人" @ok="handleOk"
               ok-text="确认" cancel-text="取消">
       <a-form :model="passenger" :label-col="{ span: 4 }" :wrapper-col="{ span: 16 }">
@@ -62,9 +22,89 @@ export default defineComponent({
       </a-form>
 
     </a-modal>
-  </div>
+
 
 </template>
+
+<script>
+import { ref ,defineComponent,reactive} from 'vue';
+import {notification} from "ant-design-vue";
+import axios from "axios";
+export default defineComponent({
+  name: "passenger",
+  setup() {
+    const visible = ref(false);
+    const passenger = reactive({
+      id: undefined,
+      memberId: undefined,
+      name: undefined,
+      idCard: undefined,
+      type: undefined,
+      createTime: undefined,
+      updateTime: undefined
+    });
+    const dataSource = ref([
+      {
+        key: '1',
+        name: 'John Brown',
+        age: 32,
+        address: 'New York No. 1 Lake Park',
+      },
+      {
+        key: '2',
+        name: 'Jim Green',
+        age: 42,
+        address: 'London No. 1 Lake Park',
+      },
+    ])
+    const columns = [
+      {
+        title: '姓名',
+        dataIndex: 'name',
+        key: 'name',
+      },
+      {
+        title: '身份证',
+        dataIndex: 'idCard',
+        key: 'idCard',
+      },
+      {
+        title: '类型',
+        dataIndex: 'type',
+        key: 'type',
+      },
+      {
+        title: '操作',
+        key: 'action',
+        scopedSlots: { customRender: 'action' },
+      }
+    ]
+    const showModal = () => {
+      visible.value = true;
+    };
+    const handleOk =()=> {
+      axios.post('/member/passenger/save', passenger).then(response => {
+        let data = response.data;
+        if (data.success) {
+          notification.success({description: '保存成功'});
+          visible.value = false;
+        } else {
+          notification.error({description: data.message});
+        }
+      });
+    };
+    return{
+      visible,
+      showModal,
+      handleOk,
+      passenger,
+      dataSource,
+      columns
+    }
+  }
+})
+
+</script>
 
 <style scoped>
 
