@@ -1,7 +1,11 @@
 <template>
   <a-layout-sider width="200" style="background: #fff">
     <a-menu :selectedKeys="selectedKeys2">
-        <a-menu-item key="1"><CoffeeOutlined style="padding-right: 8px" />欢迎</a-menu-item>
+        <a-menu-item key="1">
+          <router-link to="/welcome">
+            <CoffeeOutlined style="padding-right: 8px" />欢迎
+          </router-link>
+        </a-menu-item>
         <a-menu-item key="2">
           <router-link to="/passenger">
             <UserOutlined style="padding-right: 8px"/> 乘车人管理

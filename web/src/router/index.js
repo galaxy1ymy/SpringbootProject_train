@@ -19,14 +19,21 @@ const routes = [
     children: [
       {
         path: 'passenger',
-        name: 'passenger',  // 添加路由名称
+        name: 'passenger',
         component: () => import('../views/passenger.vue')
       },
-
+      {
+        path: 'welcome',
+        name: 'welcome',
+        component: () => import('../views/main/welcome.vue')
+      },
     ]
-
+  },
+    //访问根域名直接跳转到welcome
+  {
+    path: '',
+    redirect: '/welcome'
   }
-
 ]
 
 const router = createRouter({

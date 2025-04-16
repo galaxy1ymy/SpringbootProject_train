@@ -67,7 +67,7 @@ export default defineComponent({
                 store.commit('setMember', data.content);
                 console.log('登录成功，获取到的token:', data.content.token);  // 添加这行
                 notification.success({description: '登录成功',duration:3});
-                router.push("/");
+                router.push("/welcome");
             } else {
                 notification.error({description: data.message});
             }

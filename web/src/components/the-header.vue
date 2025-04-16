@@ -6,7 +6,11 @@
       <router-link to="/login" style="color: white">退出登录</router-link>
     </div>
     <a-menu theme="dark" mode="horizontal" :style="{ lineHeight: '64px' }" :selectedKeys="selectedKeys1">
-      <a-menu-item key="1"><CoffeeOutlined style="padding-right: 8px"/>欢迎</a-menu-item>
+      <a-menu-item key="1">
+        <router-link to="/welcome" style="color: inherit;">
+          <CoffeeOutlined style="padding-right: 8px"/>欢迎
+        </router-link>
+      </a-menu-item>
       <a-menu-item key="2">
         <router-link to="/passenger" style="color: inherit;">
           <UserOutlined style="padding-right: 8px"/> 乘车人管理
