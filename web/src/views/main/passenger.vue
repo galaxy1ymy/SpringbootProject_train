@@ -2,7 +2,7 @@
     <p>
       <a-button type="primary" @click="showModal">新增</a-button>
     </p>
-    <a-table :dataSource="dataSource" :columns="columns" />
+    <a-table :dataSource="passengers" :columns="columns" />
     <a-modal v-model:visible="visible" title="乘车人" @ok="handleOk"
               ok-text="确认" cancel-text="取消">
       <a-form :model="passenger" :label-col="{ span: 4 }" :wrapper-col="{ span: 16 }">
@@ -27,9 +27,10 @@
 </template>
 
 <script>
-import { ref ,defineComponent,reactive} from 'vue';
+import { ref ,defineComponent,reactive,onMounted} from 'vue';
 import {notification} from "ant-design-vue";
 import axios from "axios";
+
 export default defineComponent({
   name: "passenger",
   setup() {
@@ -43,20 +44,7 @@ export default defineComponent({
       createTime: undefined,
       updateTime: undefined
     });
-    const dataSource = ref([
-      {
-        key: '1',
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-      },
-      {
-        key: '2',
-        name: 'Jim Green',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-      },
-    ])
+    const passengers = ref([]);
     const columns = [
       {
         title: '姓名',
@@ -72,16 +60,36 @@ export default defineComponent({
         title: '类型',
         dataIndex: 'type',
         key: 'type',
-      },
-      {
-        title: '操作',
-        key: 'action',
-        scopedSlots: { customRender: 'action' },
-      }
-    ]
+      }];
+
     const showModal = () => {
       visible.value = true;
     };
+
+    const handleQuery=(param)=>{
+      axios.get("member/passenger/query-list",{
+        params:{
+          page:param.page,
+          size:param.size
+        }
+      }).then((response) => {
+        let data = response.data;
+        if(data.success){
+          passengers.value = data.content.list;
+        }else{
+          notification.error({description: data.message});
+        }
+      });
+    };
+
+    //界面渲染好后执行
+    onMounted(()=>{
+      handleQuery({
+        page:1,
+        size:10
+      });
+    })
+
     const handleOk =()=> {
       axios.post('/member/passenger/save', passenger).then(response => {
         let data = response.data;
@@ -98,7 +106,7 @@ export default defineComponent({
       showModal,
       handleOk,
       passenger,
-      dataSource,
+      passengers,
       columns
     }
   }
