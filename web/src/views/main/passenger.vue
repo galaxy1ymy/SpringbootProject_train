@@ -18,7 +18,7 @@
         </template>
       </template>
     </a-table>
-    <a-modal v-model:visible="visible" title="乘车人" @ok="handleOk"
+    <a-modal v-model:open="visible" title="乘车人" @ok="handleOk"
               ok-text="确认" cancel-text="取消">
       <a-form :model="passenger" :label-col="{ span: 4 }" :wrapper-col="{ span: 16 }">
         <a-form-item label="姓名">
@@ -87,12 +87,13 @@ export default defineComponent({
       ];
 
     const onAdd = () => {
+      passenger.value = {};
       visible.value = true;
     };
 
     const onEdit = (record) => {
+      passenger.value = window.Tool.copy(record);
       visible.value = true;
-      passenger.value = record;
     };
 
     const handleQuery=(param)=>{
@@ -162,7 +163,8 @@ export default defineComponent({
       columns,
       pagination,
       handleTableChange,
-      handleQuery
+      handleQuery,
+      loading
     }
   }
 })
