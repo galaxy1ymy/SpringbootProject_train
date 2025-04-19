@@ -18,6 +18,7 @@ import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,27 +28,33 @@ public class PassengerService {
 
     @Resource
     private PassengerMapper passengerMapper;
+    @Transactional
     public void save(PassengerSaveReq req){
         DateTime now = DateTime.now();
         Passenger passenger = BeanUtil.copyProperties(req, Passenger.class);
-        if(ObjectUtil.isNull(passenger.getId())){
-            passenger.setMemberId(LoginMemberContext.getId());
-            passenger.setId(SnowUtil.getSnowflakeNextId());
+        Long loginMemberId = LoginMemberContext.getId(); // 获取当前登录用户的ID
+        if (ObjectUtil.isNull(passenger.getId())) {  // 如果 id 为空，则为新增
+            passenger.setMemberId(loginMemberId);  // 确保正确赋值 memberId
+            passenger.setId(SnowUtil.getSnowflakeNextId());     // 生成新的唯一 id
             passenger.setCreateTime(now);
             passenger.setUpdateTime(now);
-            passengerMapper.insert(passenger);
-        }else {
+            passengerMapper.insert(passenger);  // 新增数据
+
+        } else {  // 如果 id 不为空，则为编辑
+            passenger.setMemberId(loginMemberId);
             passenger.setUpdateTime(now);
-            passengerMapper.updateByPrimaryKey(passenger);
+            passengerMapper.updateByPrimaryKey(passenger);  // 更新数据
         }
     }
+
+
     public PageResp<PassengerQueryResp> queryList(PassengerQueryReq req){
         PassengerExample passengerExample = new PassengerExample();
         passengerExample.setOrderByClause("id desc");
         PassengerExample.Criteria criteria = passengerExample.createCriteria();
-        if(ObjectUtil.isNotNull(req.getMemberId())){
-            criteria.andMemberIdEqualTo(req.getMemberId());
-        }
+        Long loginMemberId = LoginMemberContext.getId();
+        criteria.andMemberIdEqualTo(loginMemberId);
+
 
         LOG.info("查询页码：{}", req.getPage());
         LOG.info("每页条数：{}", req.getSize());

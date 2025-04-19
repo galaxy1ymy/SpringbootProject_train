@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 
 public class PassengerQueryResp {
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
 
     private Long memberId;

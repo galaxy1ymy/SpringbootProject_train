@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Date;
 
 public class PassengerSaveReq {
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
 
     private Long memberId;

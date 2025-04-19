@@ -61,7 +61,7 @@ export default defineComponent({
     const pagination = ref({
       total: 0,
       current: 1,
-      pageSize: 2,
+      pageSize: 20,
     });
     //防止用户频繁的点击提交按钮，导致多次请求
     let loading = ref(false);
@@ -138,21 +138,23 @@ export default defineComponent({
       });
     })
 
-    const handleOk =()=> {
+    const handleOk = () => {
       axios.post('/member/passenger/save', passenger.value).then(response => {
         let data = response.data;
         if (data.success) {
-          notification.success({description: '保存成功'});
+          notification.success({ description: '保存成功' });
           visible.value = false;
+          // 保存成功后重新查询数据
           handleQuery({
-            page:pagination.value.current,
-            size:pagination.value.pageSize
+            page: pagination.value.current,
+            size: pagination.value.pageSize
           });
         } else {
-          notification.error({description: data.message});
+          notification.error({ description: data.message });
         }
       });
     };
+
     return{
       visible,
       onAdd,

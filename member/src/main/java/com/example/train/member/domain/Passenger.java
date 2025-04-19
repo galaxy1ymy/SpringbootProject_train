@@ -1,8 +1,11 @@
 package com.example.train.member.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class Passenger {
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
 
     private Long memberId;
