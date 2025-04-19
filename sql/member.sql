@@ -18,3 +18,7 @@ create table `passenger`(
     primary key (`id`),
     index `member_id_index` (`member_id`)
 ) engine = innodb default charset = utf8mb4 comment='乘车人';
+
+SELECT * FROM passenger WHERE name ='张三';
+
+SELECT * FROM passenger WHERE id = 1913489326008832000;

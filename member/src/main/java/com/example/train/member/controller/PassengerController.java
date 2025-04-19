@@ -4,15 +4,12 @@ import com.example.train.common.context.LoginMemberContext;
 import com.example.train.common.resp.CommonResp;
 import com.example.train.common.resp.PageResp;
 import com.example.train.member.req.*;
-import com.example.train.member.resp.MemberLoginResp;
 import com.example.train.member.resp.PassengerQueryResp;
-import com.example.train.member.service.MemberService;
 import com.example.train.member.service.PassengerService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/passenger")
@@ -20,7 +17,7 @@ public class PassengerController {
     @Resource
     private PassengerService passengerService;
     @PostMapping("/save")
-    public CommonResp<Object> save(@Valid @RequestBody PassengerSaveReq req) {
+    public CommonResp<Long> save(@Valid @RequestBody PassengerSaveReq req) {
         passengerService.save(req);
         return new CommonResp<>();
     }
