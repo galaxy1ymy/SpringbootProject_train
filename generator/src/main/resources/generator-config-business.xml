@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "https://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!-- 加载外部配置文件（可选） -->
+    <!-- <properties resource="application.properties"/> -->
+    <context id="Mysql" targetRuntime="MyBatis3" defaultModelType="flat">
+        <!-- 禁止生成注释 -->
+
+        <property name="autoDelimitKeywords" value="true"/>
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <!-- 数据库连接配置 -->
+        <jdbcConnection
+                driverClass="com.mysql.cj.jdbc.Driver"
+                connectionURL="jdbc:mysql://localhost:3306/train_business?useSSL=false&amp;characterEncoding=UTF8&amp;serverTimezone=Asia/Shanghai"
+                userId="train_business"
+                password="123456">
+        </jdbcConnection>
+        <!-- 实体类生成配置 -->
+        <javaModelGenerator
+                targetPackage="com.example.train.member.domain"
+                targetProject="..\member\src\main\java">
+            <!-- 开启 Lombok 注解（按需添加） -->
+            <!-- <property name="constructorBased" value="false"/> -->
+            <!-- <property name="useLombok" value="true"/> -->
+        </javaModelGenerator>
+        <!-- XML 映射文件生成配置 -->
+        <sqlMapGenerator
+                targetPackage="mapper"
+                targetProject="..\member\src\main\resources">
+        </sqlMapGenerator>
+        <!-- Mapper 接口生成配置 -->
+        <javaClientGenerator
+                type="XMLMAPPER"
+                targetPackage="com.example.train.member.mapper"
+                targetProject="..\member\src\main\java">
+        </javaClientGenerator>
+        <!-- 指定 member 表生成规则 -->
+        <!--<table tableName="member" domainObjectName="Member"></table>-->
+        <table tableName="passenger" domainObjectName="Passenger"></table>
+        <!-- 其他表的配置（按需添加） -->
+        <!-- <table tableName="other_table"/> -->
+    </context>
+</generatorConfiguration>
