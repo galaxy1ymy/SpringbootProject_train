@@ -13,10 +13,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ServerGenerator {
-    static String servicePath="[module]/src/main/java/com/example/train/[module]/service/";
+    static String serverPath ="[module]/src/main/java/com/example/train/[module]/";
     static String pomPath="generator\\pom.xml";
     static {
-        new File(servicePath).mkdirs();
+        new File(serverPath).mkdirs();
     }
     public static void main(String[] args) throws Exception {
         //获取mybatis-generator
@@ -24,9 +24,9 @@ public class ServerGenerator {
         //替换得到member值（module:member）
         String module = generatorPath.replace("src/main/resources/generator-config-","").replace(".xml","");
         System.out.println("module:"+module);
-        servicePath=servicePath.replace("[module]",module);
+        serverPath = serverPath.replace("[module]",module);
         //new File(servicePath).mkdirs();
-        System.out.println("servicePath:"+servicePath);
+        System.out.println("servicePath:"+ serverPath);
 
         //读取table节点
         Document document = new SAXReader().read("generator/" + generatorPath);
@@ -52,8 +52,18 @@ public class ServerGenerator {
         System.out.println("组装参数:"+param);
 
 
-        FreemarkerUtil.initConfig("service.ftl");
-        FreemarkerUtil.generator(servicePath+Domain+"Service.java",param);
+        gen(Domain, param,"service");
+        gen(Domain, param,"controller");
+    }
+
+    private static void gen(String Domain, Map<String, Object> param,String target) throws IOException, TemplateException {
+        FreemarkerUtil.initConfig(target+".ftl");
+        String toPath= serverPath +target+"/";
+        new File(toPath).mkdirs();
+        String Target=target.substring(0,1).toUpperCase()+target.substring(1);
+        String filename=toPath+ Domain +Target+".java";
+        System.out.println("开始生成："+filename);
+        FreemarkerUtil.generator(filename,param);
     }
 
     private static String getGeneratorPath() throws DocumentException {
