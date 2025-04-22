@@ -46,8 +46,6 @@ public class PassengerService {
             passengerMapper.updateByPrimaryKey(passenger);  // 更新数据
         }
     }
-
-
     public PageResp<PassengerQueryResp> queryList(PassengerQueryReq req){
         PassengerExample passengerExample = new PassengerExample();
         passengerExample.setOrderByClause("id desc");
@@ -70,11 +68,8 @@ public class PassengerService {
         pageResp.setTotal(pageInfo.getTotal());
         pageResp.setList(list);
         return pageResp;
-
     }
-
     public void delete(Long id){
         passengerMapper.deleteByPrimaryKey(id);
     }
-
 }
