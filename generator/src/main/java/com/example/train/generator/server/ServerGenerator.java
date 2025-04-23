@@ -1,5 +1,7 @@
 package com.example.train.generator.server;
 
+import com.example.train.generator.util.DbUtil;
+import com.example.train.generator.util.Field;
 import com.example.train.generator.util.FreemarkerUtil;
 import freemarker.template.TemplateException;
 import org.dom4j.Document;
@@ -10,6 +12,7 @@ import org.dom4j.io.SAXReader;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ServerGenerator {
@@ -36,6 +39,14 @@ public class ServerGenerator {
         Node domainObjectName = table.selectSingleNode("@domainObjectName");
         System.out.println(tableName.getText()+"/"+domainObjectName.getText());
 
+        //为DBUtil设置数据源
+        Node connectionURL = document.selectSingleNode("//@connectionURL");
+        Node userID = document.selectSingleNode("//@userId");
+        Node password = document.selectSingleNode("//@password");
+        System.out.println("url:"+connectionURL.getText());
+        System.out.println("userID:"+userID.getText());
+        System.out.println("password:"+password.getText());
+
         //示例表名：jiawa_test
         //Domain=JiawaTest
         String Domain=domainObjectName.getText();
@@ -43,7 +54,9 @@ public class ServerGenerator {
         String domain=Domain.substring(0,1).toLowerCase()+Domain.substring(1);
         //do_main=jiawa-test
         String do_main=tableName.getText().replaceAll("_","-");
-
+        //表中文名
+        String tableNameCH = DbUtil.getTableComment(tableName.getText());
+        List<Field> fieldList = DbUtil.getColumnByTableName(tableName.getText());
         //组装参数
         Map<String,Object> param=new HashMap<>();
         param.put("Domain",Domain);
