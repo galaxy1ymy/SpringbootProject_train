@@ -3,7 +3,6 @@ package com.example.train.${module}.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
-import com.example.train.common.context.LoginMemberContext;
 import com.example.train.common.resp.PageResp;
 import com.example.train.common.util.SnowUtil;
 import com.example.train.${module}.domain.${Domain};
@@ -32,16 +31,12 @@ public class ${Domain}Service {
     public void save(${Domain}SaveReq req){
         DateTime now = DateTime.now();
         ${Domain} ${domain} = BeanUtil.copyProperties(req, ${Domain}.class);
-        Long loginMemberId = LoginMemberContext.getId(); // 获取当前登录用户的ID
-        if (ObjectUtil.isNull(${domain}.getId())) {  // 如果 id 为空，则为新增
-            ${domain}.setMemberId(loginMemberId);  // 确保正确赋值 ${module}Id
-            ${domain}.setId(SnowUtil.getSnowflakeNextId());     // 生成新的唯一 id
+        if (ObjectUtil.isNull(${domain}.getId())) {
+            ${domain}.setId(SnowUtil.getSnowflakeNextId());
             ${domain}.setCreateTime(now);
             ${domain}.setUpdateTime(now);
             ${domain}Mapper.insert(${domain});  // 新增数据
-
-        } else {  // 如果 id 不为空，则为编辑
-            ${domain}.setMemberId(loginMemberId);
+        } else {
             ${domain}.setUpdateTime(now);
             ${domain}Mapper.updateByPrimaryKey(${domain});  // 更新数据
         }
@@ -50,9 +45,6 @@ public class ${Domain}Service {
         ${Domain}Example ${domain}Example = new ${Domain}Example();
         ${domain}Example.setOrderByClause("id desc");
         ${Domain}Example.Criteria criteria = ${domain}Example.createCriteria();
-        Long loginMemberId = LoginMemberContext.getId();
-        criteria.andMemberIdEqualTo(loginMemberId);
-
 
         LOG.info("查询页码：{}", req.getPage());
         LOG.info("每页条数：{}", req.getSize());
