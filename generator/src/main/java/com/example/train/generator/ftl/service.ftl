@@ -1,4 +1,4 @@
-package com.example.train.member.service;
+package com.example.train.${module}.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
@@ -6,12 +6,12 @@ import cn.hutool.core.util.ObjectUtil;
 import com.example.train.common.context.LoginMemberContext;
 import com.example.train.common.resp.PageResp;
 import com.example.train.common.util.SnowUtil;
-import com.example.train.member.domain.${Domain};
-import com.example.train.member.domain.${Domain}Example;
-import com.example.train.member.mapper.${Domain}Mapper;
-import com.example.train.member.req.${Domain}QueryReq;
-import com.example.train.member.req.${Domain}SaveReq;
-import com.example.train.member.resp.${Domain}QueryResp;
+import com.example.train.${module}.domain.${Domain};
+import com.example.train.${module}.domain.${Domain}Example;
+import com.example.train.${module}.mapper.${Domain}Mapper;
+import com.example.train.${module}.req.${Domain}QueryReq;
+import com.example.train.${module}.req.${Domain}SaveReq;
+import com.example.train.${module}.resp.${Domain}QueryResp;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import jakarta.annotation.Resource;
@@ -34,7 +34,7 @@ public class ${Domain}Service {
         ${Domain} ${domain} = BeanUtil.copyProperties(req, ${Domain}.class);
         Long loginMemberId = LoginMemberContext.getId(); // 获取当前登录用户的ID
         if (ObjectUtil.isNull(${domain}.getId())) {  // 如果 id 为空，则为新增
-            ${domain}.setMemberId(loginMemberId);  // 确保正确赋值 memberId
+            ${domain}.setMemberId(loginMemberId);  // 确保正确赋值 ${module}Id
             ${domain}.setId(SnowUtil.getSnowflakeNextId());     // 生成新的唯一 id
             ${domain}.setCreateTime(now);
             ${domain}.setUpdateTime(now);

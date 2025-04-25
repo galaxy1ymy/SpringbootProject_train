@@ -58,6 +58,7 @@ public class ServerGenerator {
         Set<String> typeSet = getJavaTypes(fieldList);
         //组装参数
         Map<String,Object> param=new HashMap<>();
+        param.put("module",module);
         param.put("Domain",Domain);
         param.put("domain",domain);
         param.put("do_main",do_main);
