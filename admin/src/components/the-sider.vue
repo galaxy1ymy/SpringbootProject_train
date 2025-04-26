@@ -6,9 +6,9 @@
             <CoffeeOutlined/>&nbsp; 欢迎
           </router-link>
         </a-menu-item>
-        <a-menu-item key="/passenger">
-          <router-link to="/passenger">
-            <UserOutlined/>&nbsp; 乘车人管理
+        <a-menu-item key="/about">
+          <router-link to="/about">
+            <UserOutlined/>&nbsp;关于
           </router-link>
 
         </a-menu-item>

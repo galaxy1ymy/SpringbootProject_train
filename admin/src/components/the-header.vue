@@ -1,19 +1,26 @@
 <template>
   <a-layout-header class="header">
-    <div class="logo"/>
-    <div style="float: right;color: white">
-      您好,{{member.mobile}}！&nbsp;&nbsp;
-      <router-link to="/login" style="color: white">退出登录</router-link>
+    <div class="logo">
+      <router-link to="/welcome" style="color:white ">
+        12306控台
+      </router-link>
     </div>
-    <a-menu theme="dark" mode="horizontal" :style="{ lineHeight: '64px' }" :selectedKeys="selectedKeys">
+    <div style="float: right;color: white">
+      欢迎使用管理控台
+    </div>
+    <a-menu
+        theme="dark"
+        mode="horizontal"
+        :style="{ lineHeight: '64px' }"
+        :selectedKeys="selectedKeys">
       <a-menu-item key="/welcome">
         <router-link to="/welcome" style="color: inherit;">
           <CoffeeOutlined/>&nbsp; 欢迎
         </router-link>
       </a-menu-item>
-      <a-menu-item key="/passenger">
-        <router-link to="/passenger" style="color: inherit;">
-          <UserOutlined/>&nbsp; 乘车人管理
+      <a-menu-item key="/about">
+        <router-link to="/about" style="color: inherit;">
+          <UserOutlined/>&nbsp;关于
         </router-link>
       </a-menu-item>
     </a-menu>
@@ -22,7 +29,6 @@
 
 <script>
 import {defineComponent, ref, watch} from 'vue';
-import store from "@/store";
 import router from "@/router";
 
 export default defineComponent({
@@ -30,7 +36,6 @@ export default defineComponent({
   setup() {
 
     const selectedKeys = ref([]);
-    let member=store.state.member
     watch(() => router.currentRoute.value.path, (newValue) => {
       console.log('watch',newValue);
       selectedKeys.value=[];
@@ -40,7 +45,6 @@ export default defineComponent({
 
     return{
       selectedKeys,
-      member
 
     };
   }
@@ -51,9 +55,9 @@ export default defineComponent({
 <style scoped>
 .logo {
   float: left;
-  width: 120px;
+  width: 150px;
   height: 31px;
-  margin: 16px 24px 16px 0;
-  background: rgba(255, 255, 255, 0.3);
+  color: white;
+  font-size: 20px;
 }
 </style>
