@@ -1,4 +1,4 @@
-package com.example.train.generator.server;
+package com.example.train.generator.gen;
 
 import com.example.train.generator.util.DbUtil;
 import com.example.train.generator.util.Field;
