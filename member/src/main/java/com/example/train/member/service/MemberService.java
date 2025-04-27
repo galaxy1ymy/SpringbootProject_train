@@ -4,7 +4,6 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.jwt.JWTUtil;
 import com.example.train.common.exception.BusinessException;
 import com.example.train.common.exception.BusinessExceptionEnum;
 import com.example.train.common.util.JwtUtil;
@@ -21,7 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
+
 
 @Service
 public class MemberService {

@@ -27,8 +27,8 @@
         </jdbcConnection>
         <!-- 实体类生成配置 -->
         <javaModelGenerator
-                targetPackage="com.example.train.member.domain"
-                targetProject="..\member\src\main\java">
+                targetPackage="com.example.train.business.domain"
+                targetProject="..\business\src\main\java">
             <!-- 开启 Lombok 注解（按需添加） -->
             <!-- <property name="constructorBased" value="false"/> -->
             <!-- <property name="useLombok" value="true"/> -->
@@ -36,17 +36,17 @@
         <!-- XML 映射文件生成配置 -->
         <sqlMapGenerator
                 targetPackage="mapper"
-                targetProject="..\member\src\main\resources">
+                targetProject="..\business\src\main\resources">
         </sqlMapGenerator>
         <!-- Mapper 接口生成配置 -->
         <javaClientGenerator
                 type="XMLMAPPER"
-                targetPackage="com.example.train.member.mapper"
-                targetProject="..\member\src\main\java">
+                targetPackage="com.example.train.business.mapper"
+                targetProject="..\business\src\main\java">
         </javaClientGenerator>
         <!-- 指定 member 表生成规则 -->
-        <!--<table tableName="member" domainObjectName="Member"></table>-->
-        <table tableName="passenger" domainObjectName="Passenger"></table>
+        <table tableName="member" domainObjectName="Member"></table>
+        <!--<table tableName="passenger" domainObjectName="Passenger"></table>-->
         <!-- 其他表的配置（按需添加） -->
         <!-- <table tableName="other_table"/> -->
     </context>
