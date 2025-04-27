@@ -10,7 +10,11 @@
           <router-link to="/about">
             <UserOutlined/>&nbsp;关于
           </router-link>
-
+        </a-menu-item>
+        <a-menu-item key="/station">
+          <router-link to="/station">
+            <UserOutlined/>&nbsp;车站管理
+          </router-link>
         </a-menu-item>
     </a-menu>
   </a-layout-sider>
