@@ -1,19 +1,14 @@
 module.exports = {
   devServer: {
-    port: 8080
-  }
-}
-
-module.exports = {
-  devServer: {
     proxy: {
-      '/api': {
+      '/business': {
         target: 'http://localhost:8000',
         changeOrigin: true,
-        pathRewrite: {
-          '^/api': ''
-        }
+        pathRewrite: { '^/business': '' }
       }
+    },
+    client: {
+      overlay: false
     }
   }
-}
+};
