@@ -21,6 +21,11 @@ const routes = [
         name: 'station',
         component: () => import('../views/main/station.vue')
       },
+      {
+        path: 'train',
+        name: 'train',
+        component: () => import('../views/main/train.vue')
+      },
     ]
   },
     //访问根域名直接跳转到welcome

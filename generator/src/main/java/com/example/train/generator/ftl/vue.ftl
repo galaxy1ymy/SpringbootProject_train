@@ -46,8 +46,8 @@
         <a-form-item label="${field.nameCn}">
             <#if field.enums>
             <a-select v-model:value="${domain}.${field.nameHump}">
-                <a-select-option v-for="item in ${field.enumsConst}_ARRAY" :key="item.key" :value="item.key">
-                    {{item.value}}
+                <a-select-option v-for="item in ${field.enumsConst}_ARRAY" :key="item.code" :value="item.code">
+                    {{item.desc}}
                 </a-select-option>
             </a-select>
             <#elseif field.javaType=='Date'>
