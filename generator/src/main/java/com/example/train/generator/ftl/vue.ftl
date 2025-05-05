@@ -51,9 +51,9 @@
                 </a-select-option>
             </a-select>
             <#elseif field.javaType=='Date'>
-            <#if field.type="time">
+            <#if field.type=="time">
             <a-time-picker v-model:value="${domain}.${field.nameHump}" valueFormat="HH:mm:ss" placeholder="请选择时间" />
-            <#elseif field.type="date">
+            <#elseif field.type=="date">
             <a-date-picker v-model:value="${domain}.${field.nameHump}" valueFormat="yyyy-MM-dd" placeholder="请选择日期" />
             <#else>
             <a-date-picker v-model:value="${domain}.${field.nameHump}" valueFormat="yyyy-MM-dd HH:mm:ss" placeholder="请选择日期时间" />

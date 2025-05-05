@@ -128,7 +128,11 @@ public class DbUtil {
                 || sqlType.toUpperCase().contains("text".toUpperCase())
                 || sqlType.toUpperCase().contains("char".toUpperCase())){
             return "String";
-        } else if (sqlType.toUpperCase().contains("datetime".toUpperCase())){
+        } else if (sqlType.toUpperCase().contains("datetime".toUpperCase())) {
+            return "Date";
+        } else if(sqlType.toUpperCase().contains("time".toUpperCase())){
+            return "Date";
+        } else if (sqlType.toUpperCase().contains("date".toUpperCase())) {
             return "Date";
         } else if (sqlType.toUpperCase().contains("bigint".toUpperCase())) {
             return "Long";
