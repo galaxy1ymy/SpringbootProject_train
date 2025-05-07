@@ -33,7 +33,7 @@
         </a-menu-item>
         <a-menu-item key="/train_seat">
           <router-link to="/train_seat">
-            <UserOutlined/>&nbsp;座位
+            <UserOutlined/>&nbsp;火车座位
           </router-link>
         </a-menu-item>
     </a-menu>
