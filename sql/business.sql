@@ -63,4 +63,16 @@ CREATE TABLE `train_carriage` (
     unique key `train_code_index_unique` (`train_code`, `index`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='火车车厢';
 
-
+drop table if exists `train_seat`;
+CREATE TABLE `train_seat` (
+    `id` bigint NOT NULL  COMMENT 'id',
+    `train_code` varchar(20) NOT NULL COMMENT '车次编号',
+    `carriage_index` int NOT NULL COMMENT '厢序',
+    `row` char(2) NOT NULL COMMENT '排号|01, 02',
+    `col` char(1) NOT NULL COMMENT '列号|枚举[SeatColEnum]',
+    `seat_type` char(1) NOT NULL COMMENT '座位类型|枚举[SeatTypeEnum]',
+    `carriage_seat_index` int NOT NULL COMMENT '同车厢座位号',
+    `create_time` datetime(3) COMMENT '新增时间',
+    `update_time` datetime(3) COMMENT '修改时间',
+    primary key (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='座位';
