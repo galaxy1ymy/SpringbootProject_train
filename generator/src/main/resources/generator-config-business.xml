@@ -46,7 +46,8 @@
         </javaClientGenerator>
         <!-- 指定 member 表生成规则 -->
 <!--        <table tableName="station" domainObjectName="Station"></table>-->
-        <table tableName="train" domainObjectName="Train"></table>
+        <!--<table tableName="train" domainObjectName="Train"></table>-->
+        <table tableName="train_station" domainObjectName="TrainStation"></table>
         <!--<table tableName="passenger" domainObjectName="Passenger"></table>-->
         <!-- 其他表的配置（按需添加） -->
         <!-- <table tableName="other_table"/> -->
