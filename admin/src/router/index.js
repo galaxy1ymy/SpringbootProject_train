@@ -31,6 +31,11 @@ const routes = [
         name: 'train-station',
         component: () => import('../views/main/train-station.vue')
       },
+      {
+        path: 'train-carriage',
+        name: 'train-carriage',
+        component: () => import('../views/main/train-carriage.vue')
+      },
     ]
   },
     //访问根域名直接跳转到welcome
