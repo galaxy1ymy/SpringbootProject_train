@@ -54,7 +54,7 @@
             <a-input v-model:value="trainCarriage.rowCount" />
         </a-form-item>
         <a-form-item label="列数">
-            <a-input v-model:value="trainCarriage.columnCount" />
+            <a-input v-model:value="trainCarriage.colCount" />
         </a-form-item>
       </a-form>
     </a-modal>
@@ -77,7 +77,7 @@ export default defineComponent({
         seatType: undefined,
         seatCount: undefined,
         rowCount: undefined,
-        columnCount: undefined,
+        colCount: undefined,
         createTime: undefined,
         updateTime: undefined,
     });
@@ -118,8 +118,8 @@ export default defineComponent({
        },
        {
          title: '列数',
-         dataIndex: 'columnCount',
-         key: 'columnCount',
+         dataIndex: 'colCount',
+         key: 'colCount',
        },
        {
          title:'操作',
