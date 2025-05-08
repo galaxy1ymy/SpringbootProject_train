@@ -75,7 +75,7 @@ import {notification} from "ant-design-vue";
 import axios from "axios";
 
 export default defineComponent({
-  name: "${domain}-view",
+  name: "${do_main}-view",
   setup() {
       <#list fieldList as field>
           <#if field.enums>

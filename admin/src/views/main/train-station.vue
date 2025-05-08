@@ -28,12 +28,7 @@
               ok-text="确认" cancel-text="取消">
       <a-form :model="trainStation" :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }">
         <a-form-item label="车次编号">
-            <a-select v-model:value="trainStation.trainCode" show-search
-                      :filter-option="filterTrainCodeOption">
-              <a-select-option v-for="item in trains" :key="item.code" :value="item.code" :label="item.code+item.start+item.end">
-                {{ item.code }}|{{item.start}}~{{item.end}}
-              </a-select-option>
-            </a-select>
+            <train-select-view v-model:value="trainStation.trainCode"></train-select-view>
         </a-form-item>
         <a-form-item label="站序">
             <a-input v-model:value="trainStation.index" />
@@ -65,9 +60,11 @@ import { ref ,defineComponent,onMounted,watch} from 'vue';
 import {notification} from "ant-design-vue";
 import axios from "axios";
 import { pinyin } from 'pinyin-pro';
+import TrainSelectView from "@/components/train-select.vue";
 
 export default defineComponent({
-  name: "trainStation-view",
+  name: "train-station-view",
+  components: {TrainSelectView},
   setup() {
     const visible = ref(false);
     let trainStation = ref({
@@ -214,23 +211,6 @@ export default defineComponent({
         }
       });
     };
-    //车次下拉框
-    const trains=ref([]);
-    const queryTrainCode=()=>{
-      axios.get("/business/admin/train/query-all").then((response) => {
-        let data = response.data;
-        if(data.success){
-          trains.value=data.content;
-        }else{
-          notification.error({description: data.message});
-        }
-      });
-    }
-    //下拉框筛选
-    const filterTrainCodeOption=(input,option)=>{
-      console.log(input,option);
-      return option.label.toLowerCase().indexOf(input.toLowerCase())>=0;
-    };
 
     const handleTableChange=(pagination)=>{
       handleQuery({
@@ -245,11 +225,7 @@ export default defineComponent({
         page:1,
         size:pagination.value.pageSize
       });
-
-      queryTrainCode();
     })
-
-
 
     return{
       visible,
@@ -263,9 +239,7 @@ export default defineComponent({
       onAdd,
       onEdit,
       handleOk,
-      onDelete,
-      filterTrainCodeOption,
-      trains
+      onDelete
     }
   }
 })
