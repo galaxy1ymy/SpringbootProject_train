@@ -32,7 +32,7 @@ public class TrainSeatQueryResp {
      */
     private String seatType;
     /**
-     * 同车厢座位号
+     * 同车厢座序
      */
     private Integer carriageSeatIndex;
     /**

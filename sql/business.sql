@@ -71,7 +71,7 @@ CREATE TABLE `train_seat` (
     `row` char(2) NOT NULL COMMENT '排号|01, 02',
     `col` char(1) NOT NULL COMMENT '列号|枚举[SeatColEnum]',
     `seat_type` char(1) NOT NULL COMMENT '座位类型|枚举[SeatTypeEnum]',
-    `carriage_seat_index` int NOT NULL COMMENT '同车厢座位号',
+    `carriage_seat_index` int NOT NULL COMMENT '同车厢座序',
     `create_time` datetime(3) COMMENT '新增时间',
     `update_time` datetime(3) COMMENT '修改时间',
     primary key (`id`)

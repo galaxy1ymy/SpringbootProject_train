@@ -46,9 +46,9 @@ public class TrainSeatSaveReq {
      private String seatType;
 
     /**
-     * 同车厢座位号
+     * 同车厢座序
      */
-     @NotNull(message = "[同车厢座位号]不能为空！")
+     @NotNull(message = "[同车厢座序]不能为空！")
      private Integer carriageSeatIndex;
 
     /**

@@ -64,7 +64,7 @@
                 </a-select-option>
             </a-select>
         </a-form-item>
-        <a-form-item label="同车厢座位号">
+        <a-form-item label="同车厢座序">
             <a-input v-model:value="trainSeat.carriageSeatIndex" />
         </a-form-item>
       </a-form>
@@ -131,7 +131,7 @@ export default defineComponent({
          key: 'seatType',
        },
        {
-         title: '同车厢座位号',
+         title: '同车厢座序',
          dataIndex: 'carriageSeatIndex',
          key: 'carriageSeatIndex',
        },
