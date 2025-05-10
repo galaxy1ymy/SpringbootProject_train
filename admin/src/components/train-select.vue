@@ -1,76 +1,79 @@
 <template>
-  <a-select v-model:value="trainCode" show-search allow-clear
-            :filter-option="filterTrainCodeOption"
-            @change="onChange" placeholder="请选择车次"
-            :style="'width:'+localwidth">
-    <a-select-option v-for="item in trains" :key="item.code" :value="item.code" :label="item.code+item.start+item.end">
-      {{ item.code }}|{{item.start}}~{{item.end}}
+  <a-select
+      v-model:value="trainCode"
+      show-search
+      allow-clear
+      optionFilterProp="children"
+      :filterOption="filterOption"
+      @change="onChange"
+      placeholder="请选择车次"
+      :style="'width:' + localWidth"
+  >
+    <a-select-option
+        v-for="item in trains"
+        :key="item.code"
+        :value="item.code"
+    >
+      <span class="option-content">
+        {{ item.code }} | {{ item.start }} ~ {{ item.end }}
+      </span>
     </a-select-option>
   </a-select>
 </template>
 
 <script>
-import { ref ,defineComponent,onMounted,watch} from 'vue';
-import {notification} from "ant-design-vue";
-import axios from "axios";
+import { ref, defineComponent, onMounted } from 'vue';
+import { notification } from 'ant-design-vue';
+import axios from 'axios';
+
 export default defineComponent({
-  name:"train-select-view",
-  props:["modelValue","width"],
-  emits:["update:modelValue",'change'],
-  setup(props,{emit}){
-    const trainCode=ref();
-    const trains=ref([]);
+  name: 'TrainSelectView',
+  props: ['modelValue', 'width'],
+  emits: ['update:modelValue', 'change'],
+  setup(props, { emit }) {
+    const trains = ref([]);
+    const trainCode = ref(props.modelValue);
+    const localWidth = ref(props.width || '100%');
 
-    const localwidth=ref(props.width);
-    if(Tool.isEmpty(props.width)){
-      localwidth.value="100%";
-    }
-    //利用watch，动态获取父组件的值，如果放在onMounted或其他方法中，则只有第一次有效
-    watch(()=>props.modelValue,()=>{
-      console.log("props.modelValue",props.modelValue);
-      trainCode.value=props.modelValue;
-    },{immediate:true});
+    const filterOption = (input, option) => {
+      return option.children[0].children
+          .toLowerCase()
+          .includes(input.toLowerCase());
+    };
 
-    const queryAllTrain=()=>{
-      axios.get("/business/admin/train/query-all").then((response) => {
-        let data = response.data;
-        if(data.success){
-          trains.value=data.content;
-        }else{
-          notification.error({description: data.message});
+    const onChange = (value) => {
+      emit('update:modelValue', value);
+      const selected = trains.value.find(item => item.code === value) || {};
+      emit('change', selected);
+    };
+
+    onMounted(async () => {
+      try {
+        const response = await axios.get("/business/admin/train/query-all");
+        if (response.data.success) {
+          trains.value = response.data.content;
+        } else {
+          notification.error({ description: response.data.message });
         }
-      });
-    }
-    //下拉框筛选
-    const filterTrainCodeOption=(input,option)=>{
-      console.log(input,option);
-      return option.label.toLowerCase().indexOf(input.toLowerCase())>=0;
-    };
-
-    const onChange=(value)=>{
-      emit("update:modelValue",value);
-      let train=trains.value.filter(item=>item.code===value)[0];
-      if(Tool.isEmpty(train)){
-        train={};
+      } catch (error) {
+        notification.error({ description: '请求失败，请检查网络' });
       }
-      emit ("change",train);
-    };
-
-    onMounted(()=>{
-      queryAllTrain();
     });
-    return{
+
+    return {
       trainCode,
       trains,
-      filterTrainCodeOption,
+      filterOption,
       onChange,
-      localwidth
-    }
+      localWidth
+    };
   }
-
-})
+});
 </script>
 
 <style scoped>
-
+.option-content {
+  display: inline-block;
+  width: 100%;
+}
 </style>
