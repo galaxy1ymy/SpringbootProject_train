@@ -92,7 +92,7 @@ export default defineComponent({
     //防止用户频繁的点击提交按钮，导致多次请求
     let loading = ref(false);
     let params=ref({
-      trainCode:""
+      trainCode:null
     });
     const columns = [
        {
