@@ -3,6 +3,7 @@ package com.example.train.business.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
+import com.example.train.business.domain.TrainSeatExample;
 import com.example.train.common.resp.PageResp;
 import com.example.train.common.util.SnowUtil;
 import com.example.train.business.domain.TrainCarriage;
@@ -43,7 +44,7 @@ public class TrainCarriageService {
     }
     public PageResp<TrainCarriageQueryResp> queryList(TrainCarriageQueryReq req){
         TrainCarriageExample trainCarriageExample = new TrainCarriageExample();
-        trainCarriageExample.setOrderByClause("id desc");
+        trainCarriageExample.setOrderByClause("id asc");
         TrainCarriageExample.Criteria criteria = trainCarriageExample.createCriteria();
 
         LOG.info("查询页码：{}", req.getPage());
@@ -63,5 +64,14 @@ public class TrainCarriageService {
     }
     public void delete(Long id){
         trainCarriageMapper.deleteByPrimaryKey(id);
+    }
+
+    public List<TrainCarriage> selectByTrainCode(String trainCode){
+        TrainCarriageExample trainCarriageExample = new TrainCarriageExample();
+        trainCarriageExample.setOrderByClause("`index` asc");
+        TrainCarriageExample.Criteria criteria = trainCarriageExample.createCriteria();
+        criteria.andTrainCodeEqualTo(trainCode);
+        return trainCarriageMapper.selectByExample(trainCarriageExample);
+
     }
 }

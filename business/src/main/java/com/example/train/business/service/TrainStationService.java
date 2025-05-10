@@ -43,7 +43,7 @@ public class TrainStationService {
     }
     public PageResp<TrainStationQueryResp> queryList(TrainStationQueryReq req){
         TrainStationExample trainStationExample = new TrainStationExample();
-        trainStationExample.setOrderByClause("id desc");
+        trainStationExample.setOrderByClause("id asc");
         TrainStationExample.Criteria criteria = trainStationExample.createCriteria();
 
         LOG.info("查询页码：{}", req.getPage());
