@@ -22,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 @Service
@@ -81,7 +80,7 @@ public class TrainSeatService {
         trainSeatMapper.deleteByExample(trainSeatExample);
         //查找当前车次下的所有车厢
         List<TrainCarriage> carriageList = trainCarriageService.selectByTrainCode(trainCode);
-        LOG.info("当前车次下的车厢数：{}",carriageList.size());
+        LOG.info("当前车次下的车厢数：{}", carriageList.size());
         //循环生成每个车厢的座位
         for (TrainCarriage trainCarriage : carriageList) {
             //拿到车厢数据，行数，座位类型
@@ -90,7 +89,7 @@ public class TrainSeatService {
             int seatIndex=1;
             //根据车厢的座位类型筛选出所有的列
             List<SeatColEnum> colEnumList = SeatColEnum.getColsByType(seatType);
-            LOG.info("根据车厢的座位类型，筛选出所有的列：{}",colEnumList);
+            LOG.info("根据车厢的座位类型筛选出所有的列：{}", colEnumList);
             //循环行数
             for (int row = 1; row <=rowCount; row++) {
                 //循环列数

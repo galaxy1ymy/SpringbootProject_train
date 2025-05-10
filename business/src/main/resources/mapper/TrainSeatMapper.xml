@@ -5,9 +5,9 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="train_code" jdbcType="VARCHAR" property="trainCode" />
     <result column="carriage_index" jdbcType="INTEGER" property="carriageIndex" />
-    <result column="row" jdbcType="CHAR" property="row" />
-    <result column="col" jdbcType="CHAR" property="col" />
-    <result column="seat_type" jdbcType="CHAR" property="seatType" />
+    <result column="row" jdbcType="VARCHAR" property="row" />
+    <result column="col" jdbcType="VARCHAR" property="col" />
+    <result column="seat_type" jdbcType="VARCHAR" property="seatType" />
     <result column="carriage_seat_index" jdbcType="INTEGER" property="carriageSeatIndex" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -106,11 +106,13 @@
   </delete>
   <insert id="insert" parameterType="com.example.train.business.domain.TrainSeat">
     insert into train_seat (id, train_code, carriage_index, 
-      `row`, col, seat_type, carriage_seat_index, 
-      create_time, update_time)
+      `row`, col, seat_type, 
+      carriage_seat_index, create_time, update_time
+      )
     values (#{id,jdbcType=BIGINT}, #{trainCode,jdbcType=VARCHAR}, #{carriageIndex,jdbcType=INTEGER}, 
-      #{row,jdbcType=CHAR}, #{col,jdbcType=CHAR}, #{seatType,jdbcType=CHAR}, #{carriageSeatIndex,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+      #{row,jdbcType=VARCHAR}, #{col,jdbcType=VARCHAR}, #{seatType,jdbcType=VARCHAR}, 
+      #{carriageSeatIndex,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.example.train.business.domain.TrainSeat">
     insert into train_seat
@@ -154,13 +156,13 @@
         #{carriageIndex,jdbcType=INTEGER},
       </if>
       <if test="row != null">
-        #{row,jdbcType=CHAR},
+        #{row,jdbcType=VARCHAR},
       </if>
       <if test="col != null">
-        #{col,jdbcType=CHAR},
+        #{col,jdbcType=VARCHAR},
       </if>
       <if test="seatType != null">
-        #{seatType,jdbcType=CHAR},
+        #{seatType,jdbcType=VARCHAR},
       </if>
       <if test="carriageSeatIndex != null">
         #{carriageSeatIndex,jdbcType=INTEGER},
@@ -192,13 +194,13 @@
         carriage_index = #{row.carriageIndex,jdbcType=INTEGER},
       </if>
       <if test="row.row != null">
-        `row` = #{row.row,jdbcType=CHAR},
+        `row` = #{row.row,jdbcType=VARCHAR},
       </if>
       <if test="row.col != null">
-        col = #{row.col,jdbcType=CHAR},
+        col = #{row.col,jdbcType=VARCHAR},
       </if>
       <if test="row.seatType != null">
-        seat_type = #{row.seatType,jdbcType=CHAR},
+        seat_type = #{row.seatType,jdbcType=VARCHAR},
       </if>
       <if test="row.carriageSeatIndex != null">
         carriage_seat_index = #{row.carriageSeatIndex,jdbcType=INTEGER},
@@ -219,9 +221,9 @@
     set id = #{row.id,jdbcType=BIGINT},
       train_code = #{row.trainCode,jdbcType=VARCHAR},
       carriage_index = #{row.carriageIndex,jdbcType=INTEGER},
-      `row` = #{row.row,jdbcType=CHAR},
-      col = #{row.col,jdbcType=CHAR},
-      seat_type = #{row.seatType,jdbcType=CHAR},
+      `row` = #{row.row,jdbcType=VARCHAR},
+      col = #{row.col,jdbcType=VARCHAR},
+      seat_type = #{row.seatType,jdbcType=VARCHAR},
       carriage_seat_index = #{row.carriageSeatIndex,jdbcType=INTEGER},
       create_time = #{row.createTime,jdbcType=TIMESTAMP},
       update_time = #{row.updateTime,jdbcType=TIMESTAMP}
@@ -239,13 +241,13 @@
         carriage_index = #{carriageIndex,jdbcType=INTEGER},
       </if>
       <if test="row != null">
-        `row` = #{row,jdbcType=CHAR},
+        `row` = #{row,jdbcType=VARCHAR},
       </if>
       <if test="col != null">
-        col = #{col,jdbcType=CHAR},
+        col = #{col,jdbcType=VARCHAR},
       </if>
       <if test="seatType != null">
-        seat_type = #{seatType,jdbcType=CHAR},
+        seat_type = #{seatType,jdbcType=VARCHAR},
       </if>
       <if test="carriageSeatIndex != null">
         carriage_seat_index = #{carriageSeatIndex,jdbcType=INTEGER},
@@ -263,9 +265,9 @@
     update train_seat
     set train_code = #{trainCode,jdbcType=VARCHAR},
       carriage_index = #{carriageIndex,jdbcType=INTEGER},
-      `row` = #{row,jdbcType=CHAR},
-      col = #{col,jdbcType=CHAR},
-      seat_type = #{seatType,jdbcType=CHAR},
+      `row` = #{row,jdbcType=VARCHAR},
+      col = #{col,jdbcType=VARCHAR},
+      seat_type = #{seatType,jdbcType=VARCHAR},
       carriage_seat_index = #{carriageSeatIndex,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
