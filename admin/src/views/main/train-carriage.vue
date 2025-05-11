@@ -48,15 +48,15 @@
                 </a-select-option>
             </a-select>
         </a-form-item>
-        <a-form-item label="座位数">
+<!--        <a-form-item label="座位数">
             <a-input v-model:value="trainCarriage.seatCount" />
-        </a-form-item>
+        </a-form-item>-->
         <a-form-item label="排数">
             <a-input v-model:value="trainCarriage.rowCount" />
         </a-form-item>
-        <a-form-item label="列数">
+<!--        <a-form-item label="列数">
             <a-input v-model:value="trainCarriage.colCount" />
-        </a-form-item>
+        </a-form-item>-->
       </a-form>
     </a-modal>
 </template>
@@ -78,9 +78,7 @@ export default defineComponent({
         trainCode: undefined,
         index: undefined,
         seatType: undefined,
-        seatCount: undefined,
         rowCount: undefined,
-        colCount: undefined,
         createTime: undefined,
         updateTime: undefined,
     });
@@ -134,7 +132,10 @@ export default defineComponent({
       ];
 
     const onAdd = () => {
-      trainCarriage.value = {};
+      trainCarriage.value = {
+        seatCount: 0,
+        colCount: 0
+      };
       visible.value = true;
     };
 

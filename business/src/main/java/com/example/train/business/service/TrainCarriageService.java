@@ -3,6 +3,7 @@ package com.example.train.business.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
+import com.example.train.business.enums.SeatColEnum;
 import com.example.train.common.resp.PageResp;
 import com.example.train.common.util.SnowUtil;
 import com.example.train.business.domain.TrainCarriage;
@@ -30,6 +31,11 @@ public class TrainCarriageService {
     @Transactional
     public void save(TrainCarriageSaveReq req){
         DateTime now = DateTime.now();
+        //自动计算出列数和总座位数
+        List<SeatColEnum> seatColEnums = SeatColEnum.getColsByType(req.getseatType());
+        req.setColCount(seatColEnums.size());
+        req.setSeatCount(req.getcolCount() * req.getrowCount());
+
         TrainCarriage trainCarriage = BeanUtil.copyProperties(req, TrainCarriage.class);
         if (ObjectUtil.isNull(trainCarriage.getId())) {
             trainCarriage.setId(SnowUtil.getSnowflakeNextId());
