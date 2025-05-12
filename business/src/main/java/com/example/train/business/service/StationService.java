@@ -36,10 +36,8 @@ public class StationService {
         Station station = BeanUtil.copyProperties(req, Station.class);
         if (ObjectUtil.isNull(station.getId())) {
             //保存之前先校验唯一键是否存在
-            StationExample stationExample = new StationExample();
-            stationExample.createCriteria().andNameEqualTo(req.getname());
-            List<Station> list = stationMapper.selectByExample(stationExample);
-            if(CollUtil.isNotEmpty(list)){
+            Station stationDB = selectByUnique(req.getname());
+            if(ObjectUtil.isNotEmpty(stationDB)){
                 throw new BusinessException(BusinessExceptionEnum.BUSINESS_STATION_NAME_UNIQUE_ERROR);
             }
 
@@ -52,6 +50,18 @@ public class StationService {
             stationMapper.updateByPrimaryKey(station);  // 更新数据
         }
     }
+
+    private Station selectByUnique(String name) {
+        StationExample stationExample = new StationExample();
+        stationExample.createCriteria().andNameEqualTo(name);
+        List<Station> list = stationMapper.selectByExample(stationExample);
+        if(CollUtil.isNotEmpty(list)){
+            return list.get(0);
+        }else{
+            return null;
+        }
+    }
+
     public PageResp<StationQueryResp> queryList(StationQueryReq req){
         StationExample stationExample = new StationExample();
         stationExample.setOrderByClause("id asc");
