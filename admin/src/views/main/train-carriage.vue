@@ -78,7 +78,9 @@ export default defineComponent({
         trainCode: undefined,
         index: undefined,
         seatType: undefined,
+        seatCount: undefined,
         rowCount: undefined,
+        colCount: undefined,
         createTime: undefined,
         updateTime: undefined,
     });
@@ -132,10 +134,7 @@ export default defineComponent({
       ];
 
     const onAdd = () => {
-      trainCarriage.value = {
-        seatCount: 0,
-        colCount: 0
-      };
+      trainCarriage.value = {};
       visible.value = true;
     };
 
