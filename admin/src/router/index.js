@@ -9,12 +9,12 @@ const routes = [
       {
         path: 'welcome',
         name: 'welcome',
-        component: () => import('../views/main/welcome.vue')
+        component: () => import('../views/main/base/welcome.vue')
       },
       {
         path: 'about',
         name: 'about',
-        component: () => import('../views/main/about.vue')
+        component: () => import('../views/main/base/about.vue')
       },
       {
         path: 'base/',
@@ -22,27 +22,27 @@ const routes = [
           {
             path: 'station',
             name: 'station',
-            component: () => import('../views/main/station.vue')
+            component: () => import('../views/main/base/station.vue')
           },
           {
             path: 'train',
             name: 'train',
-            component: () => import('../views/main/train.vue')
+            component: () => import('../views/main/base/train.vue')
           },
           {
             path: 'train-station',
             name: 'train-station',
-            component: () => import('../views/main/train-station.vue')
+            component: () => import('../views/main/base/train-station.vue')
           },
           {
             path: 'train-carriage',
             name: 'train-carriage',
-            component: () => import('../views/main/train-carriage.vue')
+            component: () => import('../views/main/base/train-carriage.vue')
           },
           {
             path: 'train_seat',
             name: 'train_seat',
-            component: () => import('../views/main/train-seat.vue')
+            component: () => import('../views/main/base/train-seat.vue')
           }
         ]
       },
@@ -50,7 +50,7 @@ const routes = [
         path: 'batch/',
        children: [{
            path: 'job',
-           component: () => import('../views/main/job.vue')
+           component: () => import('../views/main/batch/job.vue')
          }]
       }]
   },
