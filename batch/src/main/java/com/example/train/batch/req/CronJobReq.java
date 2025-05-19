@@ -4,7 +4,7 @@ public class CronJobReq {
     private String group;
     private String name;
     private String description;
-    private String cronException;
+    private String cronExpression;
 
     public String getGroup() {
         return group;
@@ -30,12 +30,12 @@ public class CronJobReq {
         this.description = description;
     }
 
-    public String getCronException() {
-        return cronException;
+    public String getCronExpression() {
+        return cronExpression;
     }
 
-    public void setCronException(String cronException) {
-        this.cronException = cronException;
+    public void setCronExpression(String cronExpression) {
+        this.cronExpression = cronExpression;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class CronJobReq {
         sb.append("group='").append(group).append('\'');
         sb.append(", name='").append(name).append('\'');
         sb.append(", description='").append(description).append('\'');
-        sb.append(", cronException='").append(cronException).append('\'');
+        sb.append(", cronExpression='").append(cronExpression).append('\'');
         sb.append('}');
         return sb.toString();
     }

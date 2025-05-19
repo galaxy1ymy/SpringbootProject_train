@@ -34,7 +34,7 @@ public class JobController {
     public CommonResp  add(@RequestBody CronJobReq cronJobReq) {
         String jobClassName=cronJobReq.getName();
         String jobGroupName=cronJobReq.getGroup();
-        String cronExpression=cronJobReq.getCronException();
+        String cronExpression=cronJobReq.getCronExpression();
         String description=cronJobReq.getDescription();
         LOG.info("创建定时任务开始：{}，{}，{}，{}",jobClassName,jobGroupName,cronExpression,description);
         CommonResp commonResp=new CommonResp();
@@ -113,7 +113,7 @@ public class JobController {
     public CommonResp reschedule(@RequestBody CronJobReq cronJobReq) {
         String jobClassName=cronJobReq.getName();
         String jobGroupName=cronJobReq.getGroup();
-        String cronExpression=cronJobReq.getCronException();
+        String cronExpression=cronJobReq.getCronExpression();
         String description=cronJobReq.getDescription();
         LOG.info("更新定时任务开始：{}，{}，{}，{}",jobClassName,jobGroupName,cronExpression,description);
         CommonResp commonResp=new CommonResp();
@@ -175,7 +175,7 @@ public class JobController {
                     CronTrigger cronTrigger = (CronTrigger) triggers.get(0);
                     cronJobResp.setNextFireTime(cronTrigger.getNextFireTime());
                     cronJobResp.setPreFireTime(cronTrigger.getPreviousFireTime());
-                    cronJobResp.setCronException(cronTrigger.getCronExpression());
+                    cronJobResp.setCronExpression(cronTrigger.getCronExpression());
                     cronJobResp.setDescription(cronTrigger.getDescription());
                     Trigger.TriggerState  triggerState = scheduler.getTriggerState(cronTrigger.getKey());
                     cronJobResp.setState(triggerState.name());

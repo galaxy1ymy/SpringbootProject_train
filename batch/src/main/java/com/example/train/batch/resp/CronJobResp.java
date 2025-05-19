@@ -13,7 +13,7 @@ public class CronJobResp {
 
     private String description;
 
-    private String cronException;
+    private String cronExpression;
 
     private String state;
 
@@ -43,12 +43,12 @@ public class CronJobResp {
         return description;
     }
 
-    public String getCronException() {
-        return cronException;
+    public String getCronExpression() {
+        return cronExpression;
     }
 
-    public void setCronException(String cronException) {
-        this.cronException = cronException;
+    public void setCronExpression(String cronExpression) {
+        this.cronExpression = cronExpression;
     }
 
     public void setDescription(String description) {
@@ -85,10 +85,10 @@ public class CronJobResp {
         sb.append("name='").append(name).append('\'');
         sb.append(", group='").append(group).append('\'');
         sb.append(", description='").append(description).append('\'');
-        sb.append(", cronException='").append(cronException).append('\'');
+        sb.append(", cronExpression='").append(cronExpression).append('\'');
         sb.append(", state='").append(state).append('\'');
-        sb.append(", nextFireTime='").append(nextFireTime).append('\'');
-        sb.append(", preFireTime='").append(preFireTime).append('\'');
+        sb.append(", nextFireTime=").append(nextFireTime);
+        sb.append(", preFireTime=").append(preFireTime);
         sb.append('}');
         return sb.toString();
     }

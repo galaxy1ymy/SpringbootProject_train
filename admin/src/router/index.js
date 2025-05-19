@@ -41,6 +41,11 @@ const routes = [
         name: 'train_seat',
         component: () => import('../views/main/train-seat.vue')
       },
+      {
+        path: 'batch/job',
+        name: 'batch/job',
+        component: () => import('../views/main/job.vue')
+      },
     ]
   },
     //访问根域名直接跳转到welcome
