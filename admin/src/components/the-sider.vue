@@ -1,6 +1,6 @@
 <template>
   <a-layout-sider width="200" style="background: #fff">
-    <a-menu :selectedKeys="selectedKeys" mode="inline">
+    <a-menu :selectedKeys="selectedKeys" mode="inline" :openKeys="['batch','base']">
         <a-menu-item key="/welcome">
           <router-link to="/welcome">
             <CoffeeOutlined/>&nbsp; 欢迎
@@ -11,36 +11,50 @@
             <UserOutlined/>&nbsp;关于
           </router-link>
         </a-menu-item>
+      <a-sub-menu key="batch">
+        <template #title>
+          <span>
+            <UnorderedListOutlined/>跑批管理
+          </span>
+        </template>
         <a-menu-item key="/batch/job">
           <router-link to="/batch/job">
             <MenuUnfoldOutlined/>&nbsp;任务管理
           </router-link>
         </a-menu-item>
-        <a-menu-item key="/station">
-          <router-link to="/station">
-            <UserOutlined/>&nbsp;车站管理
-          </router-link>
-        </a-menu-item>
-        <a-menu-item key="/train">
-          <router-link to="/train">
-            <UserOutlined/>&nbsp;火车管理
-          </router-link>
-        </a-menu-item>
-        <a-menu-item key="/train-station">
-          <router-link to="/train-station">
-            <UserOutlined/>&nbsp;火车车站
-          </router-link>
-        </a-menu-item>
-        <a-menu-item key="/train-carriage">
-          <router-link to="/train-carriage">
-            <UserOutlined/>&nbsp;火车车厢
-          </router-link>
-        </a-menu-item>
-        <a-menu-item key="/train_seat">
-          <router-link to="/train_seat">
-            <UserOutlined/>&nbsp;火车座位
-          </router-link>
-        </a-menu-item>
+      </a-sub-menu>
+       <a-sub-menu key="base">
+         <template #title>
+          <span>
+            <UnorderedListOutlined/>基础数据
+          </span>
+         </template>
+         <a-menu-item key="/base/station">
+           <router-link to="/base/station">
+             <UserOutlined/>&nbsp;车站管理
+           </router-link>
+         </a-menu-item>
+         <a-menu-item key="/base/train">
+           <router-link to="/base/train">
+             <UserOutlined/>&nbsp;火车管理
+           </router-link>
+         </a-menu-item>
+         <a-menu-item key="/base/train-station">
+           <router-link to="/base/train-station">
+             <UserOutlined/>&nbsp;火车车站
+           </router-link>
+         </a-menu-item>
+         <a-menu-item key="/base/train-carriage">
+           <router-link to="/base/train-carriage">
+             <UserOutlined/>&nbsp;火车车厢
+           </router-link>
+         </a-menu-item>
+         <a-menu-item key="/base/train_seat">
+           <router-link to="/base/train_seat">
+             <UserOutlined/>&nbsp;火车座位
+           </router-link>
+         </a-menu-item>
+       </a-sub-menu>
     </a-menu>
   </a-layout-sider>
 </template>

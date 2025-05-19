@@ -5,48 +5,54 @@ const routes = [
     path: '/',
     name: 'main',
     component: () => import('../views/main.vue'),
-    children: [
-      {
-        path: 'about',
-        name: 'about',
-        component: () => import('../views/main/about.vue')
-      },
+    children:[
       {
         path: 'welcome',
         name: 'welcome',
         component: () => import('../views/main/welcome.vue')
       },
       {
-        path: 'station',
-        name: 'station',
-        component: () => import('../views/main/station.vue')
+        path: 'about',
+        name: 'about',
+        component: () => import('../views/main/about.vue')
       },
       {
-        path: 'train',
-        name: 'train',
-        component: () => import('../views/main/train.vue')
+        path: 'base/',
+        children:[
+          {
+            path: 'station',
+            name: 'station',
+            component: () => import('../views/main/station.vue')
+          },
+          {
+            path: 'train',
+            name: 'train',
+            component: () => import('../views/main/train.vue')
+          },
+          {
+            path: 'train-station',
+            name: 'train-station',
+            component: () => import('../views/main/train-station.vue')
+          },
+          {
+            path: 'train-carriage',
+            name: 'train-carriage',
+            component: () => import('../views/main/train-carriage.vue')
+          },
+          {
+            path: 'train_seat',
+            name: 'train_seat',
+            component: () => import('../views/main/train-seat.vue')
+          }
+        ]
       },
       {
-        path: 'train-station',
-        name: 'train-station',
-        component: () => import('../views/main/train-station.vue')
-      },
-      {
-        path: 'train-carriage',
-        name: 'train-carriage',
-        component: () => import('../views/main/train-carriage.vue')
-      },
-      {
-        path: 'train_seat',
-        name: 'train_seat',
-        component: () => import('../views/main/train-seat.vue')
-      },
-      {
-        path: 'batch/job',
-        name: 'batch/job',
-        component: () => import('../views/main/job.vue')
-      },
-    ]
+        path: 'batch/',
+       children: [{
+           path: 'job',
+           component: () => import('../views/main/job.vue')
+         }]
+      }]
   },
     //访问根域名直接跳转到welcome
   {
