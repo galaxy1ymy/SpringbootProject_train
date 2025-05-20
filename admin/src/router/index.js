@@ -9,12 +9,12 @@ const routes = [
       {
         path: 'welcome',
         name: 'welcome',
-        component: () => import('../views/main/base/welcome.vue')
+        component: () => import('../views/main/welcome.vue')
       },
       {
         path: 'about',
         name: 'about',
-        component: () => import('../views/main/base/about.vue')
+        component: () => import('../views/main/about.vue')
       },
       {
         path: 'base/',
@@ -52,7 +52,17 @@ const routes = [
            path: 'job',
            component: () => import('../views/main/batch/job.vue')
          }]
-      }]
+      },
+      {
+        path: 'business/',
+        children:[
+          {
+            path: 'daily_train',
+            component: () => import('../views/main/business/daily-train.vue')
+          },
+        ]
+      },
+      ]
   },
     //访问根域名直接跳转到welcome
   {

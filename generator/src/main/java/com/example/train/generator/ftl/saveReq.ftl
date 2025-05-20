@@ -45,7 +45,7 @@ public class ${Domain}SaveReq {
 
     </#list>
     <#list fieldList as field>
-    public ${field.javaType} get${field.nameHump}(){
+    public ${field.javaType} get${field.nameBigHump}(){
         return ${field.nameHump};
     }
 

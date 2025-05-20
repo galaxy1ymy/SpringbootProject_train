@@ -76,3 +76,21 @@ CREATE TABLE `train_seat` (
     `update_time` datetime(3) COMMENT '修改时间',
     primary key (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='座位';
+
+drop table if exists `daily_train`;
+CREATE TABLE `daily_train` (
+    `id` bigint NOT NULL  COMMENT 'id',
+    `date` date NOT NULL COMMENT '日期',
+    `code` varchar(20) NOT NULL COMMENT '车次编号',
+    `type` char(1) NOT NULL COMMENT '车次类型|枚举[TrainTypeEnum]',
+    `start` varchar(20) NOT NULL COMMENT '始发站',
+    `start_pinyin` varchar(50) NOT NULL COMMENT '始发站拼音',
+    `start_time` time NOT NULL COMMENT '出发时间',
+    `end` varchar(20) NOT NULL COMMENT '终点站',
+    `end_pinyin` varchar(50) NOT NULL COMMENT '终点站拼音',
+    `end_time` time NOT NULL COMMENT '到站时间',
+    `create_time` datetime(3) COMMENT '新增时间',
+    `update_time` datetime(3) COMMENT '修改时间',
+    PRIMARY KEY (`id`),
+    unique key `date_code_unique`(`date`,`code`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='每日车次';

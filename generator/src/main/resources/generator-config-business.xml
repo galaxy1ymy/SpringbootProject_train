@@ -49,7 +49,8 @@
         <!--<table tableName="train" domainObjectName="Train"></table>-->
 <!--        <table tableName="train_station" domainObjectName="TrainStation"></table>-->
 <!--        <table tableName="train_carriage" domainObjectName="TrainCarriage"></table>-->
-        <table tableName="train_seat" domainObjectName="TrainSeat"></table>
+<!--        <table tableName="train_seat" domainObjectName="TrainSeat"></table>-->
+        <table tableName="daily_train" domainObjectName="DailyTrain"></table>
         <!--<table tableName="passenger" domainObjectName="Passenger"></table>-->
         <!-- 其他表的配置（按需添加） -->
         <!-- <table tableName="other_table"/> -->

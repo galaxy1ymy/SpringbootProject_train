@@ -1,6 +1,7 @@
 <template>
   <a-layout-sider width="200" style="background: #fff">
-    <a-menu :selectedKeys="selectedKeys" mode="inline" :openKeys="['batch','base']">
+    <a-menu :selectedKeys="selectedKeys" mode="inline"
+            :openKeys="['batch','base','business']">
         <a-menu-item key="/welcome">
           <router-link to="/welcome">
             <CoffeeOutlined/>&nbsp; 欢迎
@@ -55,6 +56,18 @@
            </router-link>
          </a-menu-item>
        </a-sub-menu>
+      <a-sub-menu key="business">
+        <template #title>
+          <span>
+            <UnorderedListOutlined/>业务管理
+          </span>
+        </template>
+        <a-menu-item key="/business/daily_train">
+          <router-link to="/business/daily_train">
+            <UserOutlined/>&nbsp;每日车次
+          </router-link>
+        </a-menu-item>
+      </a-sub-menu>
     </a-menu>
   </a-layout-sider>
 </template>
