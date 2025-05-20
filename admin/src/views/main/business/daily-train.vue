@@ -39,7 +39,7 @@
                          valueFormat="YYYY-MM-DD"  placeholder="请选择日期"/>
         </a-form-item>
         <a-form-item label="车次编号">
-            <a-input v-model:value="dailyTrain.code" />
+          <train-select-view v-model:value="dailyTrain.code" @change="onChangeCode"></train-select-view>
         </a-form-item>
         <a-form-item label="车次类型">
             <a-select v-model:value="dailyTrain.type">
@@ -74,9 +74,11 @@
 import { ref ,defineComponent,onMounted} from 'vue';
 import {notification} from "ant-design-vue";
 import axios from "axios";
+import TrainSelectView from "@/components/train-select.vue";
 
 export default defineComponent({
   name: "daily-train-view",
+  components: {TrainSelectView},
   setup() {
     const TRAIN_TYPE_ARRAY = window.TRAIN_TYPE_ARRAY;
     const visible = ref(false);
@@ -229,6 +231,14 @@ export default defineComponent({
         page:pagination.current,
         size:pagination.pageSize
       })
+    };
+
+    const onChangeCode=(train)=>{
+      console.log("车次下拉组件选择",train);
+      //  将车次编号设置到dailyTrain中
+      let t=Tool.copy(train);
+      delete t.id;
+      dailyTrain.value=Object.assign(dailyTrain.value,t);
     }
 
     //界面渲染好后执行
@@ -254,7 +264,8 @@ export default defineComponent({
       onAdd,
       onEdit,
       handleOk,
-      onDelete
+      onDelete,
+      onChangeCode
     }
   }
 })

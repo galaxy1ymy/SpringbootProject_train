@@ -43,8 +43,8 @@ export default defineComponent({
 
     const onChange = (value) => {
       emit('update:modelValue', value);
-      const selected = trains.value.find(item => item.code === value) || {};
-      emit('change', selected);
+      const train = trains.value.find(item => item.code === value) || {};
+      emit('change', train);
     };
 
     onMounted(async () => {
