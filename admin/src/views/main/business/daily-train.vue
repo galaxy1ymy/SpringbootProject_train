@@ -1,7 +1,10 @@
 <template>
     <p>
       <a-space>
-        <a-button type="primary" @click="handleQuery()">刷新</a-button>
+        <a-date-picker v-model:value="params.date" format="YYYY-MM-DD"
+                       valueFormat="YYYY-MM-DD"  placeholder="请选择日期"/>
+        <train-select-view v-model:value="params.code" width="200px"></train-select-view>
+        <a-button type="primary" @click="handleQuery()">查找</a-button>
         <a-button type="primary" @click="onAdd">新增</a-button>
       </a-space>
     </p>
@@ -105,6 +108,10 @@ export default defineComponent({
     });
     //防止用户频繁的点击提交按钮，导致多次请求
     let loading = ref(false);
+    let params=ref({
+      code:null,
+      date:null
+    });
     const columns = [
        {
          title: '日期',
@@ -210,7 +217,9 @@ export default defineComponent({
       axios.get("/business/admin/daily-train/query-list",{
         params:{
           page:param.page,
-          size:param.size
+          size:param.size,
+          code:params.value.code,
+          date:params.value.date
         }
       }).then((response) => {
         loading.value = false;
@@ -261,6 +270,7 @@ export default defineComponent({
       handleTableChange,
       handleQuery,
       loading,
+      params,
       onAdd,
       onEdit,
       handleOk,
