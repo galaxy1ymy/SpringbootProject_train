@@ -51,3 +51,12 @@ Content-Type: application/json
   "jobGroupName": "default"
 }
 
+###
+POST http://localhost:8003/batch/admin/job/run
+Content-Type: application/json
+
+{
+  "name": "com.example.train.batch.job.DailyTrainJob",
+  "jobGroupName": "default"
+}
+
