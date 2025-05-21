@@ -40,8 +40,8 @@ const routes = [
             component: () => import('../views/main/base/train-carriage.vue')
           },
           {
-            path: 'train_seat',
-            name: 'train_seat',
+            path: 'train-seat',
+            name: 'train-seat',
             component: () => import('../views/main/base/train-seat.vue')
           }
         ]
@@ -57,8 +57,12 @@ const routes = [
         path: 'business/',
         children:[
           {
-            path: 'daily_train',
+            path: 'daily-train',
             component: () => import('../views/main/business/daily-train.vue')
+          },
+          {
+            path: 'daily-train-station',
+            component: () => import('../views/main/business/daily-train-station.vue')
           },
         ]
       },

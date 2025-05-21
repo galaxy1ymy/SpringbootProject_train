@@ -94,3 +94,22 @@ CREATE TABLE `daily_train` (
     PRIMARY KEY (`id`),
     unique key `date_code_unique`(`date`,`code`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='每日车次';
+
+drop table if exists `daily_train_station`;
+CREATE TABLE `daily_train_station` (
+     `id` bigint NOT NULL  COMMENT 'id',
+     `date` date NOT NULL COMMENT '日期',
+     `train_code` varchar(20) NOT NULL COMMENT '车次编号',
+     `index` int NOT NULL COMMENT '站序',
+     `name` varchar(20) NOT NULL COMMENT '站名',
+     `name_pinyin` varchar(50) NOT NULL COMMENT '站名拼音',
+     `in_time` time comment '进站时间',
+     `out_time` time comment '出站时间',
+     `stop_time` time COMMENT '停站时长',
+     `km` decimal(8, 2) NOT NULL COMMENT '里程（公里）|从上一站到本站距离',
+     `create_time` datetime(3) COMMENT '新增时间',
+     `update_time` datetime(3) COMMENT '修改时间',
+     primary key (`id`),
+     unique key `date_train_code_index_unique` (`date`,`train_code`, `index`),
+     unique key `date_train_code_name_unique` (`date`,`train_code`, `name`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='每日车站';

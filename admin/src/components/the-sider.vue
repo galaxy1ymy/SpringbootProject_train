@@ -50,8 +50,8 @@
              <UserOutlined/>&nbsp;火车车厢
            </router-link>
          </a-menu-item>
-         <a-menu-item key="/base/train_seat">
-           <router-link to="/base/train_seat">
+         <a-menu-item key="/base/train-seat">
+           <router-link to="/base/train-seat">
              <UserOutlined/>&nbsp;火车座位
            </router-link>
          </a-menu-item>
@@ -62,9 +62,14 @@
             <UnorderedListOutlined/>业务管理
           </span>
         </template>
-        <a-menu-item key="/business/daily_train">
-          <router-link to="/business/daily_train">
+        <a-menu-item key="/business/daily-train">
+          <router-link to="/business/daily-train">
             <UserOutlined/>&nbsp;每日车次
+          </router-link>
+        </a-menu-item>
+        <a-menu-item key="/business/daily-train-station">
+          <router-link to="/business/daily-train-station">
+            <UserOutlined/>&nbsp;每日车站
           </router-link>
         </a-menu-item>
       </a-sub-menu>
