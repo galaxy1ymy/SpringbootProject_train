@@ -77,6 +77,11 @@
             <UserOutlined/>&nbsp;每日车厢
           </router-link>
         </a-menu-item>
+        <a-menu-item key="/business/daily-train-seat">
+          <router-link to="/business/daily-train-seat">
+            <UserOutlined/>&nbsp;每日座位
+          </router-link>
+        </a-menu-item>
       </a-sub-menu>
     </a-menu>
   </a-layout-sider>
