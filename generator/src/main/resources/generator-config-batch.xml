@@ -28,7 +28,7 @@
         <!-- 实体类生成配置 -->
         <javaModelGenerator
                 targetPackage="com.example.train.batch.domain"
-                targetProject="..\batch\src\main\java">
+                targetProject="../batch/src/main/java">
             <!-- 开启 Lombok 注解（按需添加） -->
             <!-- <property name="constructorBased" value="false"/> -->
             <!-- <property name="useLombok" value="true"/> -->
@@ -36,13 +36,13 @@
         <!-- XML 映射文件生成配置 -->
         <sqlMapGenerator
                 targetPackage="mapper"
-                targetProject="..\batch\src\main\resources">
+                targetProject="../batch/src/main/resources">
         </sqlMapGenerator>
         <!-- Mapper 接口生成配置 -->
         <javaClientGenerator
                 type="XMLMAPPER"
                 targetPackage="com.example.train.batch.mapper"
-                targetProject="..\batch\src\main\java">
+                targetProject="../batch/src/main/java">
         </javaClientGenerator>
 
         <table tableName="member" domainObjectName="Member"></table>
