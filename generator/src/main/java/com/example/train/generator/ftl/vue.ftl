@@ -186,12 +186,13 @@ export default defineComponent({
       });
     };
 
-    const handleTableChange=(pagination)=>{
-      handleQuery({
-        page:pagination.current,
-        size:pagination.pageSize
-      })
-    }
+    const handleTableChange=(page)=>{
+          pagination.value.pageSize = page.pageSize;
+          handleQuery({
+              page:page.current,
+              size:page.pageSize
+          })
+      }
 
     //界面渲染好后执行
     onMounted(()=>{
