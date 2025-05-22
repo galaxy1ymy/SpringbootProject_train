@@ -5,6 +5,7 @@ import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.example.train.business.domain.TrainCarriage;
+import com.example.train.business.domain.TrainCarriageExample;
 import com.example.train.business.enums.SeatColEnum;
 import com.example.train.common.resp.PageResp;
 import com.example.train.common.util.SnowUtil;
@@ -112,7 +113,13 @@ public class TrainSeatService {
                 }
             }
         }
+    }
 
-
+    public List<TrainSeat> selectByTrainCode(String trainCode){
+        TrainSeatExample trainSeatExample = new TrainSeatExample();
+        trainSeatExample.setOrderByClause("train_code asc,`carriage_index` asc,`carriage_seat_index` asc");
+        TrainSeatExample.Criteria criteria = trainSeatExample.createCriteria();
+        criteria.andTrainCodeEqualTo(trainCode);
+        return trainSeatMapper.selectByExample(trainSeatExample);
     }
 }

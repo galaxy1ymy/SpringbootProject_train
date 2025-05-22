@@ -40,6 +40,9 @@ public class DailyTrainService {
 
     @Resource
     private DailyTrainCarriageService dailyTrainCarriageService;
+
+    @Resource
+    private DailyTrainSeatService dailyTrainSeatService;
     @Transactional
     public void save(DailyTrainSaveReq req){
         DateTime now = DateTime.now();
@@ -117,10 +120,12 @@ public class DailyTrainService {
         dailyTrain.setDate(date);
         dailyTrainMapper.insert(dailyTrain);
 
-        //生成改车次的车站数据
+        //生成该车次的车站数据
         dailyTrainStationService.genDaily(date, train.getCode());
-        //生成改车次的车厢数据
+        //生成该车次的车厢数据
         dailyTrainCarriageService.genDaily(date, train.getCode());
+        //生成该车次的座位数据
+        dailyTrainSeatService.genDaily(date, train.getCode());
 
         LOG.info("生成日期【{}】车次【{}】的信息结束", DateUtil.formatDate(date), train.getCode());
     }
