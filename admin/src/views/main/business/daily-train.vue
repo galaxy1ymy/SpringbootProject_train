@@ -6,6 +6,7 @@
         <train-select-view v-model:value="params.code" width="200px"></train-select-view>
         <a-button type="primary" @click="handleQuery()">查找</a-button>
         <a-button type="primary" @click="onAdd">新增</a-button>
+        <a-button type="primary" danger @click="onClickGenDaily">手动生成车次信息</a-button>
       </a-space>
     </p>
     <a-table :dataSource="dailyTrains"
@@ -71,6 +72,14 @@
         </a-form-item>
       </a-form>
     </a-modal>
+    <a-modal  v-model:open="genDailyVisible" title="生成车次" @ok="handleGenDailyOk"
+              ok-text="确认" cancel-text="取消">
+      <a-form :model="genDaily" :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }">
+        <a-form-item label="日期">
+          <a-date-picker v-model:value="genDaily.date" placeholder="请选择日期"/>
+        </a-form-item>
+      </a-form>
+    </a-modal>
 </template>
 
 <script>
@@ -78,6 +87,7 @@ import { ref ,defineComponent,onMounted} from 'vue';
 import {notification} from "ant-design-vue";
 import axios from "axios";
 import TrainSelectView from "@/components/train-select.vue";
+import dayjs from "dayjs";
 
 export default defineComponent({
   name: "daily-train-view",
@@ -112,6 +122,10 @@ export default defineComponent({
       code:null,
       date:null
     });
+    let genDaily = ref({
+      date:null
+    });
+    const genDailyVisible = ref(false);
     const columns = [
        {
          title: '日期',
@@ -250,6 +264,28 @@ export default defineComponent({
       dailyTrain.value=Object.assign(dailyTrain.value,t);
     }
 
+    const onClickGenDaily = () => {
+      genDailyVisible.value = true;
+    }
+
+    const handleGenDailyOk = () => {
+      let date=dayjs(genDaily.value.date).format('YYYY-MM-DD');
+      axios.get('/business/admin/daily-train/gen-daily/'+date).then(response => {
+        let data = response.data;
+        if (data.success) {
+          notification.success({ description: '生成成功' });
+          genDailyVisible.value = false;
+          // 刷新列表
+          handleQuery({
+            page: pagination.value.current,
+            size: pagination.value.pageSize
+          });
+        }else{
+          notification.error({ description: data.message });
+        }
+      })
+    }
+
     //界面渲染好后执行
     onMounted(()=>{
       handleQuery({
@@ -275,7 +311,11 @@ export default defineComponent({
       onEdit,
       handleOk,
       onDelete,
-      onChangeCode
+      onChangeCode,
+      onClickGenDaily,
+      genDailyVisible,
+      genDaily,
+      handleGenDailyOk
     }
   }
 })
