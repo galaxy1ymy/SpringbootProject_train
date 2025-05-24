@@ -1,8 +1,11 @@
 <template>
     <p>
       <a-space>
-        <a-button type="primary" @click="handleQuery()">刷新</a-button>
-        
+        <train-select-view v-model:value="params.trainCode" width="200px"></train-select-view>
+        <a-date-picker v-model:value="params.date" valueFormat="YYYY-MM-DD"  placeholder="请选择日期"/>
+        <station-select-view v-model:value="params.start" width="200px"></station-select-view>
+        <station-select-view v-model:value="params.end" width="200px"></station-select-view>
+        <a-button type="primary" @click="handleQuery()">查找</a-button>
       </a-space>
     </p>
     <a-table :dataSource="dailyTrainTickets"
@@ -21,9 +24,12 @@
 import { ref ,defineComponent,onMounted} from 'vue';
 import {notification} from "ant-design-vue";
 import axios from "axios";
+import TrainSelectView from "@/components/train-select.vue";
+import StationSelectView from "@/components/station-select.vue";
 
 export default defineComponent({
   name: "daily-train-ticket-view",
+  components: {StationSelectView, TrainSelectView},
   setup() {
     const visible = ref(false);
     let dailyTrainTicket = ref({
@@ -58,6 +64,12 @@ export default defineComponent({
     });
     //防止用户频繁的点击提交按钮，导致多次请求
     let loading = ref(false);
+    let params=ref({
+      trainCode:null,
+      date:null,
+      start:null,
+      end:null
+    });
     const columns = [
        {
          title: '日期',
@@ -163,7 +175,11 @@ export default defineComponent({
       axios.get("/business/admin/daily-train-ticket/query-list",{
         params:{
           page:param.page,
-          size:param.size
+          size:param.size,
+          date:params.value.date,
+          trainCode:params.value.trainCode,
+          start:params.value.start,
+          end:params.value.end
         }
       }).then((response) => {
         loading.value = false;
@@ -206,6 +222,7 @@ export default defineComponent({
       handleTableChange,
       handleQuery,
       loading,
+      params
     }
   }
 })
