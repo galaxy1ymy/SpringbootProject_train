@@ -27,6 +27,11 @@ const routes = [
         name: 'welcome',
         component: () => import('../views/main/welcome.vue')
       },
+      {
+        path: 'ticket',
+        name: 'ticket',
+        component: () => import('../views/main/ticket.vue')
+      },
     ]
   },
     //访问根域名直接跳转到welcome
