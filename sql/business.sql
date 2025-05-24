@@ -145,3 +145,30 @@ CREATE TABLE `daily_train_seat` (
        `update_time` datetime(3) COMMENT '修改时间',
         primary key (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='每日座位';
+
+drop table if exists `daily_train_ticket`;
+CREATE TABLE `daily_train_ticket` (
+    `id` bigint NOT NULL  COMMENT 'id',
+    `date` date NOT NULL COMMENT '日期',
+    `train_code` varchar(20) NOT NULL COMMENT '车次编号',
+    `start` varchar(20) NOT NULL COMMENT '出发站',
+    `start_pinyin` varchar(50) NOT NULL COMMENT '出发站拼音',
+    `start_time` time NOT NULL COMMENT '出发时间',
+    `start_index` tinyint NOT NULL COMMENT '出发站序|本站是整个车次的第几站',
+    `end` varchar(20) NOT NULL COMMENT '到达站',
+    `end_pinyin` varchar(50) NOT NULL COMMENT '到达站拼音',
+    `end_time` time NOT NULL COMMENT '到达时间',
+    `end_index` tinyint NOT NULL COMMENT '到达站序|本站是整个车次的第几站',
+    `ydz` int not null comment '一等座余票',
+    `ydz_price` decimal(8, 2) not null comment '一等座票价',
+    `edz` int not null comment '二等座余票',
+    `edz_price` decimal(8, 2) not null comment '二等座票价',
+    `rw` int not null comment '软卧余票',
+    `rw_price` decimal(8, 2) not null comment '软卧票价',
+    `yw` int not null comment '硬卧余票',
+    `yw_price` decimal(8, 2) not null comment '硬卧票价',
+    `create_time` datetime(3) COMMENT '新增时间',
+    `update_time` datetime(3) COMMENT '修改时间',
+    primary key (`id`),
+    unique key `date_train_code_start_end_unique` (`date`,`train_code`,`start`,`end`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='余票信息';
