@@ -82,6 +82,7 @@ public class DailyTrainCarriageService {
         dailyTrainCarriageMapper.deleteByPrimaryKey(id);
     }
 
+    @Transactional
     public void genDaily(Date date, String trainCode) {
         LOG.info("生成日期【{}】车次【{}】的车厢信息开始", DateUtil.formatDate(date), trainCode);
 
