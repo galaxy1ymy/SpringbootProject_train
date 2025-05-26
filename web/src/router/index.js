@@ -32,6 +32,11 @@ const routes = [
         name: 'ticket',
         component: () => import('../views/main/ticket.vue')
       },
+      {
+        path: 'order',
+        name: 'order',
+        component: () => import('../views/main/order.vue')
+      },
     ]
   },
     //访问根域名直接跳转到welcome
