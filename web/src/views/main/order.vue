@@ -23,6 +23,32 @@
   选中的乘客：{{passengerChecks}}
   <br/>
   购票列表：{{tickets}}
+  <div class="order-tickets">
+    <a-row class="order-tickets-header" v-if="tickets.length>0">
+      <a-col :span="2">乘客</a-col>
+      <a-col :span="6">身份证</a-col>
+      <a-col :span="4">票种</a-col>
+      <a-col :span="4">座位类型</a-col>
+    </a-row>
+    <a-row class="order-tickets-row" v-for="ticket in tickets" :key="ticket.id">
+      <a-col :span="2">{{ticket.passengerName}}</a-col>
+      <a-col :span="6">{{ticket.passengerIdCard}}</a-col>
+      <a-col :span="4">
+        <a-select v-model:value="ticket.passengerType" style="width: 100%">
+          <a-select-option v-for="item in PASSENGER_TYPE_ARRAY" :key="item.code">
+            {{item.desc}}
+          </a-select-option>
+        </a-select>
+      </a-col>
+      <a-col :span="4">
+        <a-select v-model:value="ticket.seatTypeCode" style="width: 100%">
+          <a-select-option v-for="item in seatTypes" :key="item.code" :value="item.code">
+            {{item.desc}}
+          </a-select-option>
+        </a-select>
+      </a-col>
+    </a-row>
+  </div>
 </template>
 
 <script>
@@ -55,6 +81,7 @@ export default defineComponent({
     console.log("本次提供的座位：",seatTypes);
 
     const tickets=ref([]);
+    const PASSENGER_TYPE_ARRAY=window.PASSENGER_TYPE_ARRAY;
     //勾选或去掉某个乘客时在购票列表中加上或去掉一个车票
     watch(()=>passengerChecks.value,(newVal,oldVal)=>{
       console.log("勾选乘客发生变化",newVal,oldVal)
@@ -94,7 +121,8 @@ export default defineComponent({
       passengers,
       passengerOptions,
       passengerChecks,
-      tickets
+      tickets,
+      PASSENGER_TYPE_ARRAY
     }
   }
 })
@@ -113,7 +141,25 @@ export default defineComponent({
   font-size: 18px;
   color: red;
 }
-
+.order-tickets {
+  margin: 10px 0;
+}
+.order-tickets .ant-col{
+  padding: 5px 10px;
+}
+.order-tickets  .order-tickets-header{
+  background-color: cornflowerblue;
+  border:solid 1px cornflowerblue;
+  color: white;
+  font-size: 16px;
+  padding: 5px 0;
+}
+.order-tickets .order-tickets-row{
+  border:solid 1px cornflowerblue;
+  border-top:none;
+ vertical-align: middle;
+  line-height: 30px;
+}
 
 
 </style>
