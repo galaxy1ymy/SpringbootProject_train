@@ -77,11 +77,24 @@
         </a-col>
       </a-row>
       <br/>
-      选座类型chooseSeatType:{{chooseSeatType}}
+      选座对象chooseSeatObj:{{chooseSeatObj}}
       <br/>
-      选座对象chooseSeatType:{{chooseSeatObj}}
-      <br/>
-      座位类型SEAT_COL_ARRAY:{{SEAT_COL_ARRAY}}
+      <div v-if="chooseSeatType===0" style="color: red">
+        您购买的车票不支持选座
+        <div>12306规则：只有全部是一等座或全部都是二等座才支持选座</div>
+        <div>12306规则：余票小于一定数量时，不允许选座（本项目以20为例）</div>
+      </div>
+      <div v-else style="text-align: center">
+        <a-switch class="choose-seat-item" v-for="item in SEAT_COL_ARRAY" :key="item.code"
+                  v-model:checked="chooseSeatObj[item.code+'1']" :checked-children="item.desc">
+        </a-switch>
+        <div v-if="tickets.length>1">
+          <a-switch class="choose-seat-item" v-for="item in SEAT_COL_ARRAY" :key="item.code"
+                  v-model:checked="chooseSeatObj[item.code+'2']" :checked-children="item.desc">
+          </a-switch>
+        </div>
+        <div style="color: #999999">提示：您可以选择{{tickets.length}}个座位</div>
+      </div>
     </div>
   </a-modal>
 </template>
@@ -276,5 +289,8 @@ export default defineComponent({
   line-height: 30px;
 }
 
+.order-tickets .choose-seat-item{
+  margin:5px 5px;
+}
 
 </style>
