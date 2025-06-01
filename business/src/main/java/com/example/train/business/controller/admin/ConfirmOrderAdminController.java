@@ -1,6 +1,5 @@
 package com.example.train.business.controller.admin;
 
-import com.example.train.common.context.LoginMemberContext;
 import com.example.train.common.resp.CommonResp;
 import com.example.train.common.resp.PageResp;
 import com.example.train.business.req.*;
@@ -17,7 +16,7 @@ public class ConfirmOrderAdminController {
     @Resource
     private ConfirmOrderService confirmOrderService;
     @PostMapping("/save")
-    public CommonResp<Object> save(@Valid @RequestBody ConfirmOrderSaveReq req) {
+    public CommonResp<Object> save(@Valid @RequestBody ConfirmOrderDoReq req) {
         confirmOrderService.save(req);
         return new CommonResp<>();
     }
