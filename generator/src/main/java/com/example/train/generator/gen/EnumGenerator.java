@@ -1,6 +1,7 @@
 package com.example.train.generator.gen;
 
 import cn.hutool.core.util.StrUtil;
+import com.example.train.business.enums.ConfirmOrderStatusEnum;
 import com.example.train.business.enums.SeatColEnum;
 import com.example.train.business.enums.SeatTypeEnum;
 import com.example.train.business.enums.TrainTypeEnum;
@@ -16,8 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EnumGenerator {
-    /*static  String path="admin/src/assets/js/enums.js";*/
-    static  String path="web/src/assets/js/enums.js";
+    static  String path="admin/src/assets/js/enums.js";
+    /*static  String path="web/src/assets/js/enums.js";*/
 
     public static void main(String[] args){
         StringBuffer bufferObject = new StringBuffer();
@@ -28,6 +29,9 @@ public class EnumGenerator {
             toJson(TrainTypeEnum.class,bufferObject,bufferArray);
             toJson(SeatTypeEnum.class,bufferObject,bufferArray);
             toJson(SeatColEnum.class,bufferObject,bufferArray);
+            toJson(ConfirmOrderStatusEnum.class,bufferObject,bufferArray);
+
+
             StringBuffer buffer=bufferObject.append("\r\n").append(bufferArray);
             writeJs(buffer);
         }catch (Exception e){

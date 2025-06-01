@@ -172,3 +172,20 @@ CREATE TABLE `daily_train_ticket` (
     primary key (`id`),
     unique key `date_train_code_start_end_unique` (`date`,`train_code`,`start`,`end`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='余票信息';
+
+drop table if exists `confirm_order`;
+ CREATE TABLE `confirm_order` (
+    `id` bigint NOT NULL  COMMENT 'id',
+    `member_id` bigint NOT NULL COMMENT '会员id',
+    `date` date NOT NULL COMMENT '日期',
+    `train_code` varchar(20) NOT NULL COMMENT '车次编号',
+    `start` varchar(20) NOT NULL COMMENT '出发站',
+    `end` varchar(20) NOT NULL COMMENT '到达站',
+    `daily_train_ticket_id` bigint NOT NULL COMMENT '余票ID',
+    `tickets` json not null comment '车票',
+    `status` char(1) NOT NULL COMMENT '订单状态|枚举[ConfirmOrderStatusEnum]',
+    `create_time` datetime(3) COMMENT '新增时间',
+    `update_time` datetime(3) COMMENT '修改时间',
+    primary key (`id`),
+     index `date_train_code_index` (`date`, `train_code`)
+ )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='确认订单';
