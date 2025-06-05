@@ -2,7 +2,9 @@ package com.example.train.business.service;
 
 
 import com.example.train.business.domain.*;
+import com.example.train.business.enums.ConfirmOrderStatusEnum;
 import com.example.train.business.feign.MemberFeign;
+import com.example.train.business.mapper.ConfirmOrderMapper;
 import com.example.train.business.mapper.DailyTrainSeatMapper;
 
 import com.example.train.business.mapper.cust.DailyTrainTicketMapperCust;
@@ -29,6 +31,8 @@ public class AfterConfirmOrderService {
     private DailyTrainTicketMapperCust dailyTrainTicketMapperCust;
     @Resource
     private MemberFeign memberFeign;
+    @Resource
+    private ConfirmOrderMapper confirmOrderMapper;
 
     /**
      *  选中座位后事务处理（尽量短事务
@@ -39,7 +43,7 @@ public class AfterConfirmOrderService {
      */
     @Transactional
     public void afterDoConfirm(DailyTrainTicket dailyTrainTicket, List<DailyTrainSeat> finalSeatList,
-                               List<ConfirmOrderTicketReq> tickets) {
+                               List<ConfirmOrderTicketReq> tickets,  ConfirmOrder confirmOrder) {
         for(int j=0;j<finalSeatList.size();j++){
             DailyTrainSeat dailyTrainSeat = finalSeatList.get(j);
             //只更新Sell值
@@ -102,6 +106,13 @@ public class AfterConfirmOrderService {
             memberTicketReq.setSeatType(dailyTrainSeat.getSeatType());
             CommonResp<Object> commonResp=memberFeign.save(memberTicketReq);
             LOG.info("调用member接口，返回：{}",commonResp);
+
+            //更新订单状态为成功
+            ConfirmOrder confirmOrderForUpdate = new ConfirmOrder();
+            confirmOrderForUpdate.setId(confirmOrder.getId());
+            confirmOrderForUpdate.setUpdateTime(new Date());
+            confirmOrderForUpdate.setStatus(ConfirmOrderStatusEnum.SUCCESS.getCode());
+            confirmOrderMapper.updateByPrimaryKeySelective(confirmOrderForUpdate);
         }
     }
 
