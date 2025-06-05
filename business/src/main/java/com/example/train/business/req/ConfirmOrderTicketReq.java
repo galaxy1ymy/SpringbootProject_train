@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 public class ConfirmOrderTicketReq {
 
      @NotNull(message = "[乘客ID]不能为空！")
-     private Long passangerId;
+     private Long passengerId;
 
      @NotBlank(message = "[乘客票种]不能为空！")
      private String passengerType;
@@ -22,12 +22,12 @@ public class ConfirmOrderTicketReq {
 
     private  String seat;
 
-    public @NotNull(message = "[乘客ID]不能为空！") Long getPassangerId() {
-        return passangerId;
+    public @NotNull(message = "[乘客ID]不能为空！") Long getPassengerId() {
+        return passengerId;
     }
 
-    public void setPassangerId(@NotNull(message = "[乘客ID]不能为空！") Long passangerId) {
-        this.passangerId = passangerId;
+    public void setPassengerId(@NotNull(message = "[乘客ID]不能为空！") Long passengerId) {
+        this.passengerId = passengerId;
     }
 
     public @NotBlank(message = "[乘客票种]不能为空！") String getPassengerType() {
@@ -74,7 +74,7 @@ public class ConfirmOrderTicketReq {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ConfirmOrderTicketReq{");
-        sb.append("passangerId=").append(passangerId);
+        sb.append("passangerId=").append(passengerId);
         sb.append(", passengerType=").append(passengerType);
         sb.append(", passengerName=").append(passengerName);
         sb.append(", passangerIdCard='").append(passangerIdCard).append('\'');
