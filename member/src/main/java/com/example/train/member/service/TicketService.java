@@ -2,6 +2,7 @@ package com.example.train.member.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
+import cn.hutool.core.util.ObjUtil;
 import com.example.train.common.req.MemberTicketReq;
 import com.example.train.common.resp.PageResp;
 import com.example.train.common.util.SnowUtil;
@@ -43,8 +44,11 @@ public class TicketService {
 
     public PageResp<TicketQueryResp> queryList(TicketQueryReq req){
         TicketExample ticketExample = new TicketExample();
-        ticketExample.setOrderByClause("id asc");
+        ticketExample.setOrderByClause("id desc");
         TicketExample.Criteria criteria = ticketExample.createCriteria();
+        if(ObjUtil.isNotNull(req.getMemberId())){
+            criteria.andMemberIdEqualTo(req.getMemberId());
+        }
 
         LOG.info("查询页码：{}", req.getPage());
         LOG.info("每页条数：{}", req.getSize());
