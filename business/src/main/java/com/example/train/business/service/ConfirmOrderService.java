@@ -46,6 +46,9 @@ public class ConfirmOrderService {
     private DailyTrainCarriageService dailyTrainCarriageService;
     @Resource
     private DailyTrainSeatService dailyTrainSeatService;
+    @Resource
+    private AfterConfirmOrderService afterConfirmOrderService;
+
     @Transactional
     public void save(ConfirmOrderDoReq req){
         DateTime now = DateTime.now();
@@ -174,22 +177,16 @@ public class ConfirmOrderService {
         //最终的选座
         LOG.info("最终的选座：{}", finalSeatList);
 
+        //选中座位后事务处理（尽量短事务
+            //座位表修改售卖情况sell
+            //余票详情表修改余票
+            //为会员增加购票记录
+            //更新确认订单为成功
+        afterConfirmOrderService.afterDoConfirm(finalSeatList);
 
-        //选座
-
-        //一个车厢一个车厢的获取座位数据，循环
-
-        //挑选符合条件的座位，并判断座位是否被选中，
-        //如果不满足则进入下一个车厢（多个选座应该在同一个车厢）
-
-        //选中座位后事务处理
-
-        //座位表修改售卖情况sell
-        //余票详情表修改余票
-        //为会员增加购票记录
-        //更新确认订单为成功
 
     }
+
 
     private void getSeat(List<DailyTrainSeat> finalSeatList,Date date, String trainCode, String seatType,
                          String column,List<Integer> offsetList ,Integer startIndex,Integer endIndex){
