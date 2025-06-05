@@ -48,7 +48,7 @@ const routes = [
       },
       {
         path: 'batch/',
-       children: [{
+        children: [{
            path: 'job',
            component: () => import('../views/main/batch/job.vue')
          }]

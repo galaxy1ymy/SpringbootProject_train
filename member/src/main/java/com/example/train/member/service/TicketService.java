@@ -2,14 +2,13 @@ package com.example.train.member.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
-import cn.hutool.core.util.ObjectUtil;
+import com.example.train.common.req.MemberTicketReq;
 import com.example.train.common.resp.PageResp;
 import com.example.train.common.util.SnowUtil;
 import com.example.train.member.domain.Ticket;
 import com.example.train.member.domain.TicketExample;
 import com.example.train.member.mapper.TicketMapper;
 import com.example.train.member.req.TicketQueryReq;
-import com.example.train.member.req.TicketSaveReq;
 import com.example.train.member.resp.TicketQueryResp;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -27,20 +26,21 @@ public class TicketService {
 
     @Resource
     private TicketMapper ticketMapper;
+
+    /**
+     * 会员购买车票后新增保存
+     * @param req
+     */
     @Transactional
-    public void save(TicketSaveReq req){
+    public void save(MemberTicketReq req){
         DateTime now = DateTime.now();
         Ticket ticket = BeanUtil.copyProperties(req, Ticket.class);
-        if (ObjectUtil.isNull(ticket.getId())) {
-            ticket.setId(SnowUtil.getSnowflakeNextId());
-            ticket.setCreateTime(now);
-            ticket.setUpdateTime(now);
-            ticketMapper.insert(ticket);  // 新增数据
-        } else {
-            ticket.setUpdateTime(now);
-            ticketMapper.updateByPrimaryKey(ticket);  // 更新数据
+        ticket.setId(SnowUtil.getSnowflakeNextId());
+        ticket.setCreateTime(now);
+        ticket.setUpdateTime(now);
+        ticketMapper.insert(ticket);  // 新增数据
         }
-    }
+
     public PageResp<TicketQueryResp> queryList(TicketQueryReq req){
         TicketExample ticketExample = new TicketExample();
         ticketExample.setOrderByClause("id asc");
@@ -61,7 +61,6 @@ public class TicketService {
         pageResp.setList(list);
         return pageResp;
     }
-    public void delete(Long id){
-        ticketMapper.deleteByPrimaryKey(id);
-    }
+
 }
+
