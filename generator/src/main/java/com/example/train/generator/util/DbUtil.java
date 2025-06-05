@@ -11,8 +11,12 @@ import java.util.regex.Pattern;
 
 public class DbUtil {
 
-    public static String url="jdbc:mysql://localhost:3306/train_business?characterEncoding=UTF8&autoReconnect=true&serverTimezone=Asia/Shanghai";
+   /* public static String url="jdbc:mysql://localhost:3306/train_business?characterEncoding=UTF8&autoReconnect=true&serverTimezone=Asia/Shanghai";
     public static String user="train_business";
+    public static String password="123456";*/
+
+    public static String url="jdbc:mysql://localhost:3306/train_member?characterEncoding=UTF8&autoReconnect=true&serverTimezone=Asia/Shanghai";
+    public static String user="train_member";
     public static String password="123456";
 
     //连接数据库

@@ -1,7 +1,7 @@
 <template>
   <a-layout-sider width="200" style="background: #fff">
     <a-menu :selectedKeys="selectedKeys" mode="inline"
-            :openKeys="['batch','base','business']">
+            :openKeys="['batch','base','business','member']">
         <a-menu-item key="/welcome">
           <router-link to="/welcome">
             <CoffeeOutlined/>&nbsp; 欢迎
@@ -12,6 +12,18 @@
             <UserOutlined/>&nbsp;关于
           </router-link>
         </a-menu-item>
+      <a-sub-menu key="member">
+        <template #title>
+          <span>
+            <UnorderedListOutlined/>会员管理
+          </span>
+        </template>
+        <a-menu-item key="/member/ticket">
+          <router-link to="/member/ticket">
+            <UserOutlined/>&nbsp;会员车票
+          </router-link>
+        </a-menu-item>
+      </a-sub-menu>
       <a-sub-menu key="batch">
         <template #title>
           <span>

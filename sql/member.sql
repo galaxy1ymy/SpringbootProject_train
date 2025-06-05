@@ -19,6 +19,24 @@ create table `passenger`(
     index `member_id_index` (`member_id`)
 ) engine = innodb default charset = utf8mb4 comment='乘车人';
 
-SELECT * FROM passenger WHERE name ='张三';
-
-SELECT * FROM passenger WHERE id = 1913489326008832000;
+drop table if exists `ticket`;
+create table `ticket`(
+    `id` bigint not null comment 'id',
+    `member_id` bigint not null comment '会员id',
+    `passenger_id` bigint not null comment '乘客id',
+    `passenger_name` varchar(20) comment '乘客姓名',
+    `date` date not null comment '日期',
+    `train_code` varchar(20) not null comment '车次编号',
+    `carriage_index` int not null comment '厢序',
+    `row` varchar(20) NOT NULL COMMENT '排号|01, 02',
+    `col` varchar(20) NOT NULL COMMENT '列号|枚举[SeatColEnum]',
+    `start` varchar(20) NOT NULL COMMENT '出发站',
+    `start_time` time NOT NULL COMMENT '出发时间',
+    `end` varchar(20) NOT NULL COMMENT '到达站',
+    `end_time` time NOT NULL COMMENT '到达时间',
+    `seat_type` char(1) not null comment '座位类型|枚举[SeatTypeEnum]',
+    `create_time` datetime(3) comment '新增时间',
+    `update_time` datetime(3) comment '修改时间',
+    primary key (`id`),
+    index `member_id_index` (`member_id`)
+)engine = innodb default charset = utf8mb4 comment='车票';
