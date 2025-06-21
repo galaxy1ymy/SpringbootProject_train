@@ -19,6 +19,6 @@ public class TestController {
     public String hello() {
         String businessHello = businessFeign.hello();
         LOG.info(businessHello);
-        return "hello world!Batch!";
+        return "hello world!Batch!"+businessHello;
     }
 }
