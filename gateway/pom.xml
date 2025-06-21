@@ -41,6 +41,22 @@
             <optional>true</optional>
             <scope>runtime</scope>
         </dependency>
+        <!--注册中心 -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <!-- SpringBoot2.4版本之后，需要引入该依赖，才能读取bootstrap文件 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+        <!-- 客户端负载均衡 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
 
 
     </dependencies>
