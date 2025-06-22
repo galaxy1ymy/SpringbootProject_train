@@ -58,6 +58,11 @@ public class DailyTrainTicketService {
             dailyTrainTicketMapper.updateByPrimaryKey(dailyTrainTicket);  // 更新数据
         }
     }
+    @Cacheable(value = "DailyTrainTicketService.queryLis3t")
+    public PageResp<DailyTrainTicketQueryResp> queryList3(DailyTrainTicketQueryReq req){
+        LOG.info("测试缓存击穿");
+        return null;
+    }
     //强制刷新重新读数据库内容，更新缓存
     @CachePut(value = "DailyTrainTicketService.queryList")
     public PageResp<DailyTrainTicketQueryResp> queryList2(DailyTrainTicketQueryReq req){
@@ -66,6 +71,18 @@ public class DailyTrainTicketService {
     //一直读缓存
     @Cacheable(value = "DailyTrainTicketService.queryList")
     public PageResp<DailyTrainTicketQueryResp> queryList(DailyTrainTicketQueryReq req){
+        //常见的缓存过期策略
+        //TTL超时时间
+        //LPU最近最少使用
+        //LFU最近最不经常使用
+        //Random随机淘汰策略
+        //去缓存里取数据，因数据库本身就没数据而造成缓存穿透
+        //if(有数据){  区分null  []
+        //   return
+        //}else{
+        //   去数据库取数据
+        //}一百个请求只能有一个请求去数据库查询数据
+
         DailyTrainTicketExample dailyTrainTicketExample = new DailyTrainTicketExample();
         dailyTrainTicketExample.setOrderByClause("id asc");
         DailyTrainTicketExample.Criteria criteria = dailyTrainTicketExample.createCriteria();
