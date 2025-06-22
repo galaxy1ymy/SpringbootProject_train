@@ -41,6 +41,25 @@ export default defineComponent({
           .includes(input.toLowerCase());
     };
 
+    const queryAllTrain =  () => {
+      let list = SessionStorage.get(SESSION_ALL_TRAIN);
+      if (Tool.isNotEmpty(list)) {
+        console.log('queryAllTrain 读取缓存');
+        trains.value = list;
+      } else {
+         axios.get("/business/admin/train/query-all").then((response) => {
+           let data = response.data;
+           if (data.success) {
+             trains.value = data.content;
+             console.log('queryAllTrain 保存缓存');
+             SessionStorage.set(SESSION_ALL_TRAIN, trains.value);
+           } else {
+             notification.error({ description: data.message });
+           }
+         })
+         }
+    };
+
     const onChange = (value) => {
       emit('update:modelValue', value);
       const train = trains.value.find(item => item.code === value) || {};
@@ -48,16 +67,7 @@ export default defineComponent({
     };
 
     onMounted(async () => {
-      try {
-        const response = await axios.get("/business/admin/train/query-all");
-        if (response.data.success) {
-          trains.value = response.data.content;
-        } else {
-          notification.error({ description: response.data.message });
-        }
-      } catch (error) {
-        notification.error({ description: '请求失败，请检查网络' });
-      }
+      queryAllTrain();
     });
 
     return {
