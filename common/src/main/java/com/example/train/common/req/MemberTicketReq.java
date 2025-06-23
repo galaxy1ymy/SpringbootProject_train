@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Date;
 
 
+
 public class MemberTicketReq {
 
     /**
@@ -32,7 +33,7 @@ public class MemberTicketReq {
      */
      @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
      @NotNull(message = "[日期]不能为空！")
-     private Date date;
+     private Date trainDate;
 
     /**
      * 车次编号
@@ -49,20 +50,20 @@ public class MemberTicketReq {
     /**
      * 排号|01, 02
      */
-     @NotBlank(message = "[排号]不能为空！")
-     private String row;
+    @NotBlank(message = "[排号]不能为空！")
+    private String seatRow;
 
     /**
      * 列号|枚举[SeatColEnum]
      */
-     @NotBlank(message = "[列号]不能为空！")
-     private String col;
+    @NotBlank(message = "[列号]不能为空！")
+    private String seatCol;
 
     /**
      * 出发站
      */
-     @NotBlank(message = "[出发站]不能为空！")
-     private String start;
+    @NotBlank(message = "[出发站]不能为空！")
+    private String startStation;
 
     /**
      * 出发时间
@@ -75,7 +76,7 @@ public class MemberTicketReq {
      * 到达站
      */
      @NotBlank(message = "[到达站]不能为空！")
-     private String end;
+     private String endStation;
 
     /**
      * 到达时间
@@ -127,12 +128,12 @@ public class MemberTicketReq {
         this.passengerName=passengerName;
     }
 
-    public Date getDate(){
-        return date;
+    public @NotNull(message = "[日期]不能为空！") Date getTrainDate() {
+        return trainDate;
     }
 
-    public void setDate(Date date){
-        this.date=date;
+    public void setTrainDate(@NotNull(message = "[日期]不能为空！") Date trainDate) {
+        this.trainDate = trainDate;
     }
 
     public String getTrainCode(){
@@ -151,28 +152,28 @@ public class MemberTicketReq {
         this.carriageIndex=carriageIndex;
     }
 
-    public String getRow(){
-        return row;
+    public @NotBlank(message = "[排号]不能为空！") String getSeatRow() {
+        return seatRow;
     }
 
-    public void setRow(String row){
-        this.row=row;
+    public void setSeatRow(@NotBlank(message = "[排号]不能为空！") String seatRow) {
+        this.seatRow = seatRow;
     }
 
-    public String getCol(){
-        return col;
+    public @NotBlank(message = "[列号]不能为空！") String getSeatCol() {
+        return seatCol;
     }
 
-    public void setCol(String col){
-        this.col=col;
+    public void setSeatCol(@NotBlank(message = "[列号]不能为空！") String seatCol) {
+        this.seatCol = seatCol;
     }
 
-    public String getStart(){
-        return start;
+    public @NotBlank(message = "[出发站]不能为空！") String getStartStation() {
+        return startStation;
     }
 
-    public void setStart(String start){
-        this.start=start;
+    public void setStartStation(@NotBlank(message = "[出发站]不能为空！") String startStation) {
+        this.startStation = startStation;
     }
 
     public Date getStartTime(){
@@ -183,12 +184,12 @@ public class MemberTicketReq {
         this.startTime=startTime;
     }
 
-    public String getEnd(){
-        return end;
+    public @NotBlank(message = "[到达站]不能为空！") String getEndStation() {
+        return endStation;
     }
 
-    public void setEnd(String end){
-        this.end=end;
+    public void setEndStation(@NotBlank(message = "[到达站]不能为空！") String endStation) {
+        this.endStation = endStation;
     }
 
     public Date getEndTime(){
@@ -232,14 +233,14 @@ public class MemberTicketReq {
         sb.append("memberId=").append(memberId);
         sb.append("passengerId=").append(passengerId);
         sb.append("passengerName=").append(passengerName);
-        sb.append("date=").append(date);
+        sb.append("date=").append(trainDate);
         sb.append("trainCode=").append(trainCode);
         sb.append("carriageIndex=").append(carriageIndex);
-        sb.append("row=").append(row);
-        sb.append("col=").append(col);
-        sb.append("start=").append(start);
+        sb.append("row=").append(seatRow);
+        sb.append("col=").append(seatCol);
+        sb.append("start=").append(startStation);
         sb.append("startTime=").append(startTime);
-        sb.append("end=").append(end);
+        sb.append("end=").append(endStation);
         sb.append("endTime=").append(endTime);
         sb.append("seatType=").append(seatType);
         sb.append("createTime=").append(createTime);
