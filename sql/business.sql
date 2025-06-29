@@ -189,3 +189,17 @@ drop table if exists `confirm_order`;
     primary key (`id`),
      index `date_train_code_index` (`date`, `train_code`)
  )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='确认订单';
+
+create table `undo_log`(
+    `id` bigint(20) not null auto_increment,
+    `branch_id` bigint(20) not null,
+    `xid` varchar(100) not null,
+    `context` varchar(128) not null,
+    `rollback_info` longblob not null,
+    `log_status` int(11) not null,
+    `log_created` datetime not null,
+    `log_modified` datetime not null,
+    `ext` varchar(100) default null,
+    primary key(`id`),
+    unique key `ux_undo_log`(`xid`,`branch_id`)
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='AT事务回滚日志表';
