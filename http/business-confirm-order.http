@@ -1,10 +1,10 @@
 ###
 POST http://localhost:8000/business/confirm-order/do
 Content-Type: application/json
-token:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE3NTE1MTEyNjQsIm1vYmlsZSI6IjEzMDAwMDAwMDAwIiwiaWQiOjE5MDkyMTk2ODE4NDQyMDM1MjAsImV4cCI6MTc1MTU5NzY2NCwiaWF0IjoxNzUxNTExMjY0fQ.BjV6-gWwhYXMbiFVECUdvsFQGq61wT70ktStj8J_bOY
+token:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE3NTE3OTMzMzcsIm1vYmlsZSI6IjEzMDAwMDAwMDAwIiwiaWQiOjE5MDkyMTk2ODE4NDQyMDM1MjAsImV4cCI6MTc1MTg3OTczNywiaWF0IjoxNzUxNzkzMzM3fQ.u8n-SPAmkvhzgcehHt3zoVeXN7QVR8LQk98odG19H0w
 
 {
-  "dailyTrainTicketId":1940617373425995776,
+  "dailyTrainTicketId":1941788276683837440,
   "date":1751472000000,
   "end":"上海",
   "start":"北京",
@@ -12,8 +12,7 @@ token:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE3NTE1MTEyNjQsIm1vYmlsZSI6I
     "passengerId":1913511730294689792,
     "passengerName":"睡睡",
     "passengerType":"2",
-    "seat":"C1",
-    "seatTypeCode":"2"
+    "seatTypeCode":"1"
   }],
   "trainCode":"G1"
 }

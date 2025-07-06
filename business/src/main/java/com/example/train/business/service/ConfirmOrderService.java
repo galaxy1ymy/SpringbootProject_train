@@ -3,6 +3,7 @@ package com.example.train.business.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.EnumUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -27,6 +28,7 @@ import com.github.pagehelper.PageInfo;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,7 +52,7 @@ public class ConfirmOrderService {
     private DailyTrainSeatService dailyTrainSeatService;
     @Resource
     private AfterConfirmOrderService afterConfirmOrderService;
-    @Resource
+    @Autowired
     private StringRedisTemplate redisTemplate;
 
     @Transactional
@@ -92,9 +94,9 @@ public class ConfirmOrderService {
     }
 
     public void doConfirm(ConfirmOrderDoReq req){
-        String key=req.getDate()+"-"+req.getTrainCode();
-        Boolean setIfAbsent = redisTemplate.opsForValue().setIfAbsent(key, key, 5, TimeUnit.SECONDS);
-        if(setIfAbsent){
+        String lockKey= DateUtil.formatDate(req.getDate())+"-"+req.getTrainCode();
+        Boolean setIfAbsent = redisTemplate.opsForValue().setIfAbsent(lockKey,lockKey, 5, TimeUnit.SECONDS);
+        if(Boolean.TRUE.equals(setIfAbsent)){
             LOG.info("恭喜，抢到锁");
         }else{
             //只是没抢到锁，不知道票是否卖完，抛出请稍后重试
@@ -201,7 +203,9 @@ public class ConfirmOrderService {
             LOG.error("保存购票信息失效",e);
             throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_EXCEPTION);
         }
-
+        //删除分布式锁
+        LOG.info("购票流程结束，释放锁！lockKey:{}", lockKey);
+        redisTemplate.delete(lockKey);
     }
 
 
