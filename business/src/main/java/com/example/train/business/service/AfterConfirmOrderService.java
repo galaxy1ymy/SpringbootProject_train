@@ -12,7 +12,6 @@ import com.example.train.business.req.ConfirmOrderTicketReq;
 import com.example.train.common.context.LoginMemberContext;
 import com.example.train.common.req.MemberTicketReq;
 import com.example.train.common.resp.CommonResp;
-import io.seata.core.context.RootContext;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

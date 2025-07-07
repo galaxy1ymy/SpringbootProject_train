@@ -13,7 +13,6 @@ import com.example.train.member.req.TicketQueryReq;
 import com.example.train.member.resp.TicketQueryResp;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import io.seata.core.context.RootContext;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

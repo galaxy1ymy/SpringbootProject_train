@@ -101,19 +101,19 @@ public class ConfirmOrderService {
 
     public void doConfirm(ConfirmOrderDoReq req){
         String lockKey= DateUtil.formatDate(req.getDate())+"-"+req.getTrainCode();
-        /*Boolean setIfAbsent = redisTemplate.opsForValue().setIfAbsent(lockKey,lockKey, 5, TimeUnit.SECONDS);
+        Boolean setIfAbsent = redisTemplate.opsForValue().setIfAbsent(lockKey,lockKey, 5, TimeUnit.SECONDS);
         if(Boolean.TRUE.equals(setIfAbsent)){
             LOG.info("恭喜，抢到锁");
         }else{
             //只是没抢到锁，不知道票是否卖完，抛出请稍后重试
             LOG.info("很遗憾，没抢到锁");
             throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_LOCK_FAIL);
-        }*/
+        }
 
-        RLock lock=null;
+       /* RLock lock=null;*/
 
         try{
-            //使用Redisson,自带看门狗
+            /*//使用Redisson,自带看门狗
             lock=redissonClient.getLock(lockKey);
             boolean tryLock=lock.tryLock(0,  TimeUnit.SECONDS);
             if(tryLock){
@@ -126,7 +126,7 @@ public class ConfirmOrderService {
             }else{
                 LOG.info("很遗憾，没抢到锁");
                 throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_LOCK_FAIL);
-            }
+            }*/
 
             //业务数据校验，同乘客同车次是否已买过等
             Date date=req.getDate();
@@ -231,13 +231,15 @@ public class ConfirmOrderService {
             //删除分布式锁
            /* LOG.info("购票流程结束，释放锁！lockKey:{}", lockKey);
             redisTemplate.delete(lockKey);*/
-        }catch (InterruptedException e){
-            LOG.info("购票异常",e);
+        /*}catch (InterruptedException e){
+            LOG.info("购票异常",e);*/
         }finally {
-            LOG.info("购票流程结束，释放锁！");
+            LOG.info("购票流程结束，释放锁！lockKey:{}", lockKey);
+            redisTemplate.delete(lockKey);
+            /*LOG.info("购票流程结束，释放锁！");
             if(null!=lock && lock.isHeldByCurrentThread()){
                 lock.unlock();//释放锁
-            }
+            }*/
         }
     }
 
