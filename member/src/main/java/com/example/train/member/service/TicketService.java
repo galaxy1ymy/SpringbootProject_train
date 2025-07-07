@@ -35,7 +35,7 @@ public class TicketService {
      */
     @Transactional
     public void save(MemberTicketReq req)throws  Exception{
-        LOG.info("Seata全局事务ID save:{}", RootContext.getXID());
+       /* LOG.info("Seata全局事务ID save:{}", RootContext.getXID());*/
         DateTime now = DateTime.now();
         Ticket ticket = BeanUtil.copyProperties(req, Ticket.class);
         ticket.setId(SnowUtil.getSnowflakeNextId());
