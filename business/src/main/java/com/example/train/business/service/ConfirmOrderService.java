@@ -8,6 +8,8 @@ import cn.hutool.core.util.EnumUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.fastjson.JSON;
 import com.example.train.business.domain.*;
 import com.example.train.business.enums.ConfirmOrderStatusEnum;
@@ -99,6 +101,7 @@ public class ConfirmOrderService {
         confirmOrderMapper.deleteByPrimaryKey(id);
     }
 
+    @SentinelResource(value="doConfirm",blockHandler = "doConfirmBlock")
     public void doConfirm(ConfirmOrderDoReq req){
         String lockKey= DateUtil.formatDate(req.getDate())+"-"+req.getTrainCode();
         Boolean setIfAbsent = redisTemplate.opsForValue().setIfAbsent(lockKey,lockKey, 5, TimeUnit.SECONDS);
@@ -241,6 +244,14 @@ public class ConfirmOrderService {
                 lock.unlock();//释放锁
             }*/
         }
+    }
+
+    /**
+     * 购票限流处理
+     * */
+    public void doConfirmBlock(ConfirmOrderDoReq req, BlockException e){
+        LOG.info("购票请求被限流：{}", req);
+        throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_FLOW_EXCEPTION);
     }
 
     private void getSeat(List<DailyTrainSeat> finalSeatList,Date date, String trainCode, String seatType,
