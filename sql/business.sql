@@ -203,3 +203,15 @@ create table `undo_log`(
     primary key(`id`),
     unique key `ux_undo_log`(`xid`,`branch_id`)
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='AT事务回滚日志表';
+
+drop table if exists `sk_token`;
+create table `sk_token`(
+    `id` bigint not null comment 'id',
+    `date` date not null comment '日期',
+    `train_code` varchar(20) not null comment '车次编号',
+    `count` int not null comment '令牌数量',
+    `create_time` datetime(3) comment '新增时间',
+    `update_time` datetime(3) comment '修改时间',
+    primary key(`id`),
+    unique key `date_train_code_unique`(`date`,`train_code`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='秒杀令牌';

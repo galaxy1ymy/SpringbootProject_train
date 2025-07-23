@@ -55,7 +55,8 @@
         <!--<table tableName="daily_train_carriage" domainObjectName="DailyTrainCarriage"></table>-->
         <!--<table tableName="daily_train_seat" domainObjectName="DailyTrainSeat"></table>-->
         <!--<table tableName="daily_train_ticket" domainObjectName="DailyTrainTicket"></table>-->
-        <table tableName="confirm_order" domainObjectName="ConfirmOrder"></table>
+        <!--<table tableName="confirm_order" domainObjectName="ConfirmOrder"></table>-->
+        <table tableName="sk_token" domainObjectName="SkToken"></table>
         <!--<table tableName="passenger" domainObjectName="Passenger"></table>-->
         <!-- 其他表的配置（按需添加） -->
         <!-- <table tableName="other_table"/> -->

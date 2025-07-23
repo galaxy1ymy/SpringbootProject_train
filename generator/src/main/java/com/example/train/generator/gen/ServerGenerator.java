@@ -14,14 +14,14 @@ import java.io.IOException;
 import java.util.*;
 
 public class ServerGenerator {
-    static boolean readOnly=true;
+    static boolean readOnly=false;
     static String vuePath="admin/src/views/main/";
     static String serverPath ="[module]/src/main/java/com/example/train/[module]/";
     static String pomPath="generator/pom.xml";
     static String module="";
-    static {
+    /*static {
         new File(serverPath).mkdirs();
-    }
+    }*/
     public static void main(String[] args) throws Exception {
         //获取mybatis-generator
         String generatorPath = getGeneratorPath();
@@ -29,7 +29,7 @@ public class ServerGenerator {
         module = generatorPath.replace("src/main/resources/generator-config-","").replace(".xml","");
         System.out.println("module:"+module);
         serverPath = serverPath.replace("[module]",module);
-        //new File(servicePath).mkdirs();
+        new File(serverPath).mkdirs();
         System.out.println("servicePath:"+ serverPath);
 
         //读取table节点
@@ -72,10 +72,10 @@ public class ServerGenerator {
         System.out.println("组装参数:"+param);
 
 
-        /*gen(Domain, param,"service","service");
-        gen(Domain, param,"controller/admin","adminController");*/
+        gen(Domain, param,"service","service");
+        gen(Domain, param,"controller/admin","adminController");
         gen(Domain, param,"req","saveReq");
-        /*gen(Domain, param,"req","queryReq");*/
+        gen(Domain, param,"req","queryReq");
         gen(Domain, param,"resp","queryResp");
         genVue(do_main,param);
     }

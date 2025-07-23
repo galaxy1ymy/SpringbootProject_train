@@ -26,8 +26,8 @@
                 <configuration>
                     <verbose>true</verbose>
                     <overwrite>true</overwrite>
-                    <configurationFile>src/main/resources/generator-config-member.xml</configurationFile>
-                    <!--<configurationFile>src/main/resources/generator-config-business.xml</configurationFile>-->
+                    <!--<configurationFile>src/main/resources/generator-config-member.xml</configurationFile>-->
+                    <configurationFile>src/main/resources/generator-config-business.xml</configurationFile>
                     <!--<configurationFile>src/main/resources/generator-config-batch.xml</configurationFile>-->
                 </configuration>
                 <dependencies>
