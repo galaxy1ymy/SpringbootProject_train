@@ -51,4 +51,13 @@ public class ControllerExceptionHandle {
         return commonResp;
     }
 
+    //校验异常
+    @ExceptionHandler(value=RuntimeException.class)
+    @ResponseBody
+    public CommonResp exceptionHandler(RuntimeException e){
+       throw e;
+    }
+
+
+
 }
