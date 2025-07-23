@@ -74,6 +74,11 @@
             <UnorderedListOutlined/>业务管理
           </span>
         </template>
+        <a-menu-item key="/business/daily-train">
+          <router-link to="/business/daily-train">
+            <UserOutlined/>&nbsp;每日车次
+          </router-link>
+        </a-menu-item>
         <a-menu-item key="/business/sk_token">
           <router-link to="/business/sk_token">
             <UserOutlined/>&nbsp;令牌余量
@@ -87,11 +92,6 @@
         <a-menu-item key="/business/daily-train-ticket">
           <router-link to="/business/daily-train-ticket">
             <UserOutlined/>&nbsp;余票信息
-          </router-link>
-        </a-menu-item>
-        <a-menu-item key="/business/daily-train">
-          <router-link to="/business/daily-train">
-            <UserOutlined/>&nbsp;每日车次
           </router-link>
         </a-menu-item>
         <a-menu-item key="/business/daily-train-station">
