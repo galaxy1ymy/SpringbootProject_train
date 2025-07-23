@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class DailyTrainStationService {
+public class  DailyTrainStationService {
     public static final Logger LOG= LoggerFactory.getLogger(DailyTrainStationService.class);
 
     @Resource
@@ -111,4 +111,16 @@ public class DailyTrainStationService {
 
 
     }
+
+    /**
+     * 按车次查询全部车站
+     */
+    public long countByTrainCode(Date date,String trainCode){
+        DailyTrainStationExample example = new DailyTrainStationExample();
+        example.createCriteria().andDateEqualTo(date).andTrainCodeEqualTo(trainCode);
+        long stationCount=dailyTrainStationMapper.countByExample(example);
+        return stationCount;
+    }
 }
+
+
