@@ -13,6 +13,7 @@ import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.fastjson.JSON;
 import com.example.train.business.domain.*;
 import com.example.train.business.enums.ConfirmOrderStatusEnum;
+import com.example.train.business.enums.RedisKeyPreEnum;
 import com.example.train.business.enums.SeatColEnum;
 import com.example.train.business.enums.SeatTypeEnum;
 import com.example.train.business.req.ConfirmOrderTicketReq;
@@ -114,13 +115,13 @@ public class ConfirmOrderService {
             throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_SK_TOKEN_FAIL);
         }
         //购票
-        String lockKey= DateUtil.formatDate(req.getDate())+"-"+req.getTrainCode();
+        String lockKey= RedisKeyPreEnum.CONFIRM_ORDER+"-"+DateUtil.formatDate(req.getDate())+"-"+req.getTrainCode();
         Boolean setIfAbsent = redisTemplate.opsForValue().setIfAbsent(lockKey,lockKey, 5, TimeUnit.SECONDS);
         if(Boolean.TRUE.equals(setIfAbsent)){
-            LOG.info("恭喜，抢到锁");
+            LOG.info("恭喜，抢到锁！lockKey:{}", lockKey);
         }else{
             //只是没抢到锁，不知道票是否卖完，抛出请稍后重试
-            LOG.info("很遗憾，没抢到锁");
+            LOG.info("很遗憾，没抢到锁！lockKey:{}", lockKey);
             throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_LOCK_FAIL);
         }
 

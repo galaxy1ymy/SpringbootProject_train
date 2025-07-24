@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.example.train.business.enums.RedisKeyPreEnum;
 import com.example.train.business.mapper.cust.SkTokenMapperCust;
 import com.example.train.common.resp.PageResp;
 import com.example.train.common.util.SnowUtil;
@@ -116,7 +117,7 @@ public class SkTokenService {
     public boolean validSkToken(Date date, String trainCode, Long memberId){
         LOG.info("会员【{}】获取日期【{}】车次【{}】的令牌开始", memberId, DateUtil.formatDate(date), trainCode);
         //先获取令牌锁，再校验令牌余量，防止机器人抢票
-        String lockKey= DateUtil.formatDate(date)+"-"+trainCode+"-"+memberId;
+        String lockKey= RedisKeyPreEnum.SK_TOKEN+"-"+ DateUtil.formatDate(date)+"-"+trainCode+"-"+memberId;
         Boolean setIfAbsent = stringRedisTemplate.opsForValue().setIfAbsent(lockKey,lockKey, 5, TimeUnit.SECONDS);
         if(Boolean.TRUE.equals(setIfAbsent)){
             LOG.info("恭喜，抢到令牌锁了！lockKey:{}", lockKey);
