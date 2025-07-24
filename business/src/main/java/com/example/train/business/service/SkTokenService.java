@@ -18,11 +18,13 @@ import com.github.pagehelper.PageInfo;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class SkTokenService {
@@ -37,6 +39,8 @@ public class SkTokenService {
     private DailyTrainStationService dailyTrainStationService;
     @Resource
     private SkTokenMapperCust skTokenMapperCust;
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
     public void genDaily(Date date, String trainCode){
         LOG.info("删除日期【{}】车次【{}】的令牌信息开始", DateUtil.formatDate(date), trainCode);
@@ -111,6 +115,16 @@ public class SkTokenService {
      */
     public boolean validSkToken(Date date, String trainCode, Long memberId){
         LOG.info("会员【{}】获取日期【{}】车次【{}】的令牌开始", memberId, DateUtil.formatDate(date), trainCode);
+        //先获取令牌锁，再校验令牌余量，防止机器人抢票
+        String lockKey= DateUtil.formatDate(date)+"-"+trainCode+"-"+memberId;
+        Boolean setIfAbsent = stringRedisTemplate.opsForValue().setIfAbsent(lockKey,lockKey, 5, TimeUnit.SECONDS);
+        if(Boolean.TRUE.equals(setIfAbsent)){
+            LOG.info("恭喜，抢到令牌锁了！lockKey:{}", lockKey);
+        }else{
+            LOG.info("很遗憾，没抢到锁！lockKey:{}", lockKey);
+            return false;
+        }
+
         //令牌约等于库存，令牌没有了，就不再卖票，不需要再进入购票主流程去判断库存
         int updateCount = skTokenMapperCust.decrease(date, trainCode);
         if(updateCount > 0){
