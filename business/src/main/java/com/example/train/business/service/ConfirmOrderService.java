@@ -61,6 +61,8 @@ public class ConfirmOrderService {
     private StringRedisTemplate redisTemplate;
     @Autowired
     private RedissonClient redissonClient;
+    @Resource
+    private SkTokenService skTokenService;
 
 
     @Transactional
@@ -103,6 +105,15 @@ public class ConfirmOrderService {
 
     @SentinelResource(value="doConfirm",blockHandler = "doConfirmBlock")
     public void doConfirm(ConfirmOrderDoReq req){
+        //校验令牌余量
+        boolean validSkToken=skTokenService.validSkToken(req.getDate(),req.getTrainCode(),req.getMemberId());
+        if(validSkToken){
+            LOG.info("令牌校验通过");
+        } else{
+            LOG.info("令牌校验不通过");
+            throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_SK_TOKEN_FAIL);
+        }
+        //购票
         String lockKey= DateUtil.formatDate(req.getDate())+"-"+req.getTrainCode();
         Boolean setIfAbsent = redisTemplate.opsForValue().setIfAbsent(lockKey,lockKey, 5, TimeUnit.SECONDS);
         if(Boolean.TRUE.equals(setIfAbsent)){
