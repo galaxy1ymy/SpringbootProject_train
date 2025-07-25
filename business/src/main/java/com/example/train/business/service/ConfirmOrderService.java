@@ -72,6 +72,7 @@ public class ConfirmOrderService {
         ConfirmOrder confirmOrder = BeanUtil.copyProperties(req, ConfirmOrder.class);
         if (ObjectUtil.isNull(confirmOrder.getId())) {
             confirmOrder.setId(SnowUtil.getSnowflakeNextId());
+            confirmOrder.setMemberId(LoginMemberContext.getId());
             confirmOrder.setCreateTime(now);
             confirmOrder.setUpdateTime(now);
             confirmOrderMapper.insert(confirmOrder);  // 新增数据

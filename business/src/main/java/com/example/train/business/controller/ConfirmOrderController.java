@@ -4,6 +4,7 @@ import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.example.train.business.req.ConfirmOrderDoReq;
 import com.example.train.business.service.ConfirmOrderService;
+import com.example.train.common.exception.BusinessException;
 import com.example.train.common.exception.BusinessExceptionEnum;
 import com.example.train.common.resp.CommonResp;
 import jakarta.annotation.Resource;
@@ -11,6 +12,8 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
+import com.example.train.common.context.LoginMemberContext;
+
 
 
 @RestController
@@ -25,6 +28,10 @@ public class ConfirmOrderController {
     @SentinelResource(value="confirmOrderDo",blockHandler = "doConfirmBlock")
     @PostMapping("/do")
     public CommonResp<Object> doConfirm(@Valid @RequestBody ConfirmOrderDoReq req) {
+        Long memberId = LoginMemberContext.getId(); // 直接拿 ID，不用 LoginMember 对象
+
+        req.setMemberId(memberId); // 设置进请求对象中
+
         confirmOrderService.doConfirm(req);
         return new CommonResp<>();
     }

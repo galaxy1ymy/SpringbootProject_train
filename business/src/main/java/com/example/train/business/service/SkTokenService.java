@@ -7,6 +7,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.example.train.business.enums.RedisKeyPreEnum;
 import com.example.train.business.mapper.cust.SkTokenMapperCust;
+import com.example.train.common.context.LoginMemberContext;
 import com.example.train.common.exception.BusinessException;
 import com.example.train.common.exception.BusinessExceptionEnum;
 import com.example.train.common.resp.PageResp;
@@ -20,10 +21,12 @@ import com.example.train.business.resp.SkTokenQueryResp;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import jakarta.annotation.Resource;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,8 +47,10 @@ public class SkTokenService {
     private DailyTrainStationService dailyTrainStationService;
     @Resource
     private SkTokenMapperCust skTokenMapperCust;
-    @Resource
-    private RedisTemplate redisTemplate;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+    @Autowired
+    private RedissonClient redissonClient;
 
 
     public void genDaily(Date date, String trainCode){
@@ -131,17 +136,17 @@ public class SkTokenService {
             return false;
         }
 
-        String skTokenCounKey = RedisKeyPreEnum.SK_TOKEN_COUNT + "-" + DateUtil.formatDate(date) + "-" + trainCode;
-        Object skTokenCount = redisTemplate.opsForValue().get(skTokenCounKey);
+        String skTokenCountKey = RedisKeyPreEnum.SK_TOKEN_COUNT + "-" + DateUtil.formatDate(date) + "-" + trainCode;
+        Object skTokenCount = redisTemplate.opsForValue().get(skTokenCountKey);
         if (skTokenCount != null) {
-            LOG.info("缓存中有该车次令牌大闸的key：{}", skTokenCounKey);
-            Long count = redisTemplate.opsForValue().decrement(skTokenCounKey, 1);
+            LOG.info("缓存中有该车次令牌大闸的key：{}", skTokenCountKey);
+            Long count = redisTemplate.opsForValue().decrement(skTokenCountKey, 1);
             if (count < 0L) {
-                LOG.error("获取令牌失败：{}", skTokenCounKey);
+                LOG.error("获取令牌失败：{}", skTokenCountKey);
                 return false;
             } else {
                 LOG.info("获取令牌后，令牌余数：{}", count);
-                redisTemplate.expire(skTokenCounKey, 60, TimeUnit.SECONDS);
+                redisTemplate.expire(skTokenCountKey, 60, TimeUnit.SECONDS);
                 //每获取5个令牌更新一次数据库
                 if (count % 5 == 0) {
                     skTokenMapperCust.decrease(date, trainCode, 5);
@@ -149,28 +154,61 @@ public class SkTokenService {
                 return true;
             }
         } else {
-            LOG.info("缓存中没有该车次令牌大闸的key：{}", skTokenCounKey);
-            //检查是否还有令牌
-            SkTokenExample skTokenExample = new SkTokenExample();
-            skTokenExample.createCriteria().andDateEqualTo(date).andTrainCodeEqualTo(trainCode);
-            List<SkToken> tokenCountList = skTokenMapper.selectByExample(skTokenExample);
-            if (CollUtil.isNotEmpty(tokenCountList)) {
-                LOG.info("找不到日期【{}】车次【{}】的令牌记录", DateUtil.formatDate(date), trainCode);
-                return false;
-            }
-            SkToken skToken = tokenCountList.get(0);
-            if(skToken.getCount() <= 0){
-                LOG.error("日期【{}】车次【{}】的令牌余量为0", DateUtil.formatDate(date), trainCode);
-                return false;
-            }
+            LOG.info("缓存中没有该车次令牌大闸的key：{}", skTokenCountKey);
 
-            Integer count=skToken.getCount()-1;
-            skToken.setCount(count);
-            LOG.info("将该车次令牌大闸放入缓存中，key;{},count:{}", skTokenCounKey, count);
-            redisTemplate.opsForValue().set(skTokenCounKey, count, 60, TimeUnit.SECONDS);
-            skTokenMapper.updateByPrimaryKey(skToken);
-            return true;
+            // 分布式锁避免重复加载
+            String preloadLockKey = "LOCK_PRELOAD_SK_TOKEN-" + DateUtil.formatDate(date) + "-" + trainCode;
+            RLock preloadLock = redissonClient.getLock(preloadLockKey);
+            boolean lockAcquired = false;
+            try {
+                lockAcquired = preloadLock.tryLock(3, 5, TimeUnit.SECONDS); // 最长等5秒
+                if (lockAcquired) {
+                    // 再次检查 Redis，防止其他线程已经写入
+                    Object secondCheck = redisTemplate.opsForValue().get(skTokenCountKey);
+                    if (secondCheck == null) {
+                        SkTokenExample skTokenExample = new SkTokenExample();
+                        skTokenExample.createCriteria().andDateEqualTo(date).andTrainCodeEqualTo(trainCode);
+                        List<SkToken> tokenCountList = skTokenMapper.selectByExample(skTokenExample);
+
+                        if (CollUtil.isEmpty(tokenCountList)) {
+                            LOG.info("找不到日期【{}】车次【{}】的令牌记录", DateUtil.formatDate(date), trainCode);
+                            return false;
+                        }
+
+                        SkToken skToken = tokenCountList.get(0);
+                        if (skToken.getCount() <= 0) {
+                            LOG.error("日期【{}】车次【{}】的令牌余量为0", DateUtil.formatDate(date), trainCode);
+                            return false;
+                        }
+
+                        Integer count = skToken.getCount() - 1;
+                        LOG.info("将该车次令牌大闸放入缓存中，key:{}, count:{}", skTokenCountKey, count);
+                        redisTemplate.opsForValue().set(skTokenCountKey, String.valueOf(count), 3, TimeUnit.HOURS);
+                        return true;
+                    } else {
+                        LOG.info("双重检查发现 Redis 已经有 key：{}", skTokenCountKey);
+                        // 再递归或直接走缓存逻辑
+                        Long count = redisTemplate.opsForValue().decrement(skTokenCountKey, 1);
+                        if (count < 0L) {
+                            LOG.error("获取令牌失败：{}", skTokenCountKey);
+                            return false;
+                        }
+                        return true;
+                    }
+                } else {
+                    LOG.warn("未能获取 Redis 预热锁：{}", preloadLockKey);
+                    throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_SK_TOKEN_FAIL);
+                }
+            } catch (InterruptedException e) {
+                LOG.error("获取 Redis 分布式锁失败", e);
+                throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_SK_TOKEN_FAIL);
+            } finally {
+                if (lockAcquired) {
+                    preloadLock.unlock();
+                }
+            }
         }
+
 
 
 
