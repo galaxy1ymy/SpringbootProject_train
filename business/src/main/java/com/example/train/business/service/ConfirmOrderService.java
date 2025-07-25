@@ -108,7 +108,14 @@ public class ConfirmOrderService {
     @SentinelResource(value="doConfirm",blockHandler = "doConfirmBlock")
     public void doConfirm(ConfirmOrderDoReq req){
         //校验令牌余量
-        boolean validSkToken=skTokenService.validSkToken(req.getDate(),req.getTrainCode(),req.getMemberId());
+        boolean validSkToken = skTokenService.validSkToken(
+                req.getDate(),
+                req.getTrainCode(),
+                req.getMemberId(),
+                req.getTickets().size()
+
+        );
+
         if(validSkToken){
             LOG.info("令牌校验通过");
         } else{
