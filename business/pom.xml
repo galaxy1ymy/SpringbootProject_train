@@ -90,6 +90,17 @@
             <artifactId>sentinel-datasource-nacos</artifactId>
         </dependency>
 
+        <!--图形验证码-->
+        <dependency>
+            <groupId>com.github.penggle</groupId>
+            <artifactId>kaptcha</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jhlabs</groupId>
+            <artifactId>filters</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
