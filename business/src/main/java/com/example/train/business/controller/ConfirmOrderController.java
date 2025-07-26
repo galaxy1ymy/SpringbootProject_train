@@ -11,6 +11,9 @@ import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import com.example.train.common.context.LoginMemberContext;
 
@@ -25,9 +28,28 @@ public class ConfirmOrderController {
     @Resource
     private ConfirmOrderService confirmOrderService;
 
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
     @SentinelResource(value="confirmOrderDo",blockHandler = "doConfirmBlock")
     @PostMapping("/do")
     public CommonResp<Object> doConfirm(@Valid @RequestBody ConfirmOrderDoReq req) {
+
+        //图形验证码校验
+        String imageCode = req.getImageCode();
+        String imageCodeToken = req.getImageCodeToken();
+        String imageCodeRedis = redisTemplate.opsForValue().get(imageCodeToken);
+        LOG.info("从redis中获取到的验证码：{}",imageCodeRedis);
+        if(ObjectUtils.isEmpty(imageCodeRedis)){
+            return new CommonResp<>(false,"验证码已过期",null);
+        }
+        //校验验证码码，大小写忽略
+        if(!imageCodeRedis.equalsIgnoreCase(imageCode)){
+            return new CommonResp<>(false,"验证码错误",null);
+        }else{
+            redisTemplate.delete(imageCodeToken);
+        }
+
         Long memberId = LoginMemberContext.getId(); // 直接拿 ID，不用 LoginMember 对象
 
         req.setMemberId(memberId); // 设置进请求对象中

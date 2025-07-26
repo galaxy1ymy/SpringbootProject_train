@@ -101,8 +101,7 @@
 
   <!-- 验证码弹窗 -->
   <a-modal v-model:open="imageCodeModelVisible" title="请输入图片验证码" :footer="null" :closable="false"
-           style="top: 50px; width: 400px">
-    <p style="text-align: center; font-weight: bold; font-size: 18px">使用验证码削弱瞬时高峰</p>
+           style="top: 50px; width: 300px">
     <p>
       <a-input v-model:value="imageCode" placeholder="请输入图片验证码">
         <template #suffix>
@@ -110,7 +109,11 @@
         </template>
       </a-input>
     </p>
-    <a-button type="dashed" block @click="handleOk">请输入验证码后开始购票</a-button>
+    <div style="display: flex; justify-content: center;">
+      <a-button type="primary" @click="handleOk" style="width: 70px; height: 33px;">
+        确认
+      </a-button>
+    </div>
   </a-modal>
 </template>
 
@@ -299,7 +302,9 @@ export default defineComponent({
         trainCode: dailyTrainTicket.trainCode,
         start:  dailyTrainTicket.start,
         end: dailyTrainTicket.end,
-        tickets: tickets.value
+        tickets: tickets.value,
+        imageCode: imageCode.value,
+        imageCodeToken: imageCodeToken.value,
       }).then((response)=>{
         let data = response.data;
         if(data.success){
