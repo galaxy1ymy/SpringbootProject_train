@@ -3,8 +3,7 @@ package com.example.train.business.controller;
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.example.train.business.req.ConfirmOrderDoReq;
-import com.example.train.business.service.ConfirmOrderService;
-import com.example.train.common.exception.BusinessException;
+import com.example.train.business.service.BeforerConfirmOrderService;
 import com.example.train.common.exception.BusinessExceptionEnum;
 import com.example.train.common.resp.CommonResp;
 import jakarta.annotation.Resource;
@@ -26,7 +25,7 @@ public class ConfirmOrderController {
     public static final Logger LOG= LoggerFactory.getLogger(ConfirmOrderController.class);
 
     @Resource
-    private ConfirmOrderService confirmOrderService;
+    private BeforerConfirmOrderService beforerConfirmOrderService;
 
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -54,7 +53,7 @@ public class ConfirmOrderController {
 
         req.setMemberId(memberId); // 设置进请求对象中
 
-        confirmOrderService.doConfirm(req);
+        beforerConfirmOrderService.beforeDoConfirm(req);
         return new CommonResp<>();
     }
 
